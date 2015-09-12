@@ -1049,3 +1049,162 @@ void A_Linea(){
 		cout<<"ID invalido!"<<endl;
 	}
 }
+
+//Modificar
+void M_Ciudad(){
+	ofstream outFile("ciudad.bin",ios::in|ios::out);
+	char IdCiudad[5];
+	char NombreCiudad[40];
+	unsigned long key;
+	int resp;
+	string str;
+	cout<<"Ingrese el ID Ciudad del registro a modificar: ";
+	cin>>key;
+	if (binarySearch(l_indexCiudad,key,0,l_indexCiudad.size()-1)){
+		cout<<"1. Id Ciudad\n"
+			<<"2. Nombre Ciudad"<<endl;
+		cin>>resp;
+		if (resp==1){
+			cout<<"Nuevo Id Ciudad: ";
+			cin>>str;
+			if (strlen(str.c_str())==4){
+				for (int i = 0; i < sizeof(IdCiudad); i++){
+					IdCiudad[i] = str[i];
+				}
+				int pos=(PosBinarySearch(l_indexCiudad,key));
+				outFile.seekp(tamHeader+ l_indexCiudad.at(pos).rrn*( sizeof(IdCiudad)+ sizeof(NombreCiudad)));
+				outFile.write((char*)&IdCiudad, sizeof(IdCiudad));
+				l_indexCiudad.erase(l_indexCiudad.begin()+pos);
+				RI_Ciudad();
+			}else{
+				cout<<"ID invalido!"<<endl;
+			}
+		}else if(resp==2){
+			cout<<"Nuevo Nombre Ciudad: ";
+			cin>>str;
+			for (int i = 0; i < sizeof(NombreCiudad); i++){
+				NombreCiudad[i] = str[i];
+			}
+			int pos=(PosBinarySearch(l_indexCiudad,key));
+			outFile.seekp(tamHeader+ l_indexCiudad.at(pos).rrn*( sizeof(IdCiudad)+ sizeof(NombreCiudad)) + sizeof(IdCiudad));
+			outFile.write((char*)&NombreCiudad, sizeof(NombreCiudad));
+		}else{
+			cout<<"Valor invalido!"<<endl;
+		}
+	}else{
+		cout<<"Llave invalido!"<<endl;
+	}
+	outFile.close();
+}
+void M_Cliente(){
+	ofstream outFile("cliente.bin",ios::in|ios::out);
+	char IdCliente[15];
+	char NombreCliente[40];
+	char Genero[2];
+	char IdCiudad[5];
+	unsigned long key;
+	int resp;
+	string str;
+	cout<<"Ingrese el ID Cliente del registro a modificar: ";
+	cin>>key;
+	if (binarySearch(l_indexCliente,key,0,l_indexCliente.size()-1)){
+		cout<<"1. Id Cliente\n"
+			<<"2. NombreCliente\n"
+			<<"3. Genero\n"
+			<<"4. IdCiudad"<<endl;
+		cin>>resp;
+		if (resp==1){
+			cout<<"Nuevo Id Cliente: ";
+			cin>>str;
+			if (strlen(str.c_str())==13){
+				for (int i = 0; i < sizeof(IdCliente); i++){
+					IdCliente[i] = str[i];
+				}
+				int pos=(PosBinarySearch(l_indexCliente,key));
+				outFile.seekp(tamHeader+ l_indexCliente.at(pos).rrn*( sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero)+ sizeof(IdCiudad)));
+				outFile.write((char*)&IdCliente, sizeof(IdCliente));
+				l_indexCliente.erase(l_indexCliente.begin()+pos);
+				RI_Cliente();
+			}else{
+				cout<<"ID invalido!"<<endl;
+			}
+		}else if(resp==2){
+			cout<<"Nuevo Nombre Cliente: ";
+			cin>>str;
+			for (int i = 0; i < sizeof(NombreCliente); i++){
+				NombreCliente[i] = str[i];
+			}
+			int pos=(PosBinarySearch(l_indexCliente,key));
+			outFile.seekp(tamHeader+ l_indexCliente.at(pos).rrn*( sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero)+ sizeof(IdCiudad)) + sizeof(IdCliente));
+			outFile.write((char*)&NombreCliente, sizeof(NombreCliente));
+		}else if(resp==3){
+			cout<<"Nuevo Genero: ";
+			cin>>str;
+			for (int i = 0; i < sizeof(Genero); i++){
+				Genero[i]=str[i];
+			}
+			int pos=(PosBinarySearch(l_indexCliente,key));
+			outFile.seekp(tamHeader+ l_indexCliente.at(pos).rrn*( sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero)+ sizeof(IdCiudad)) + sizeof(IdCliente)+ sizeof(NombreCliente));
+			outFile.write((char*)&Genero, sizeof(Genero));
+		}else if(resp==4){
+			cout<<"Nuevo ID Ciudad: ";
+			cin>>str;
+			for (int i = 0; i < sizeof(IdCiudad); i++){
+				IdCiudad[i]=str[i];
+			}
+			int pos=(PosBinarySearch(l_indexCliente,key));
+			outFile.seekp(tamHeader+ l_indexCliente.at(pos).rrn*( sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero)+ sizeof(IdCiudad)) + sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero));
+			outFile.write((char*)&IdCiudad, sizeof(IdCiudad));
+		}else{
+			cout<<"Valor invalido!"<<endl;
+		}
+	}else{
+		cout<<"Llave invalido!"<<endl;
+	}
+	outFile.close();
+}
+void M_Linea(){
+	ofstream outFile("linea.bin",ios::in|ios::out);
+	char IdCliente[14];
+	char Numero[9];
+	unsigned long key;
+	int resp;
+	string str;
+	cout<<"Ingrese el ID Cliente del registro a modificar: ";
+	cin>>key;
+	if (binarySearch(l_indexLinea,key,0,l_indexLinea.size()-1)){
+		cout<<"1. Id Cliente\n"
+			<<"2. Numero"<<endl;
+		cin>>resp;
+		if (resp==1){
+			cout<<"Nuevo Id Cliente: ";
+			cin>>str;
+			if (strlen(str.c_str())==13){
+				for (int i = 0; i < sizeof(IdCliente); i++){
+					IdCliente[i] = str[i];
+				}
+				int pos=(PosBinarySearch(l_indexLinea,key));
+				outFile.seekp(tamHeader+ l_indexLinea.at(pos).rrn*( sizeof(IdCliente)+ sizeof(Numero)));
+				outFile.write((char*)&IdCliente, sizeof(IdCliente));
+				l_indexLinea.erase(l_indexLinea.begin()+pos);
+				RI_Linea();
+			}else{
+				cout<<"ID invalido!"<<endl;
+			}
+		}else if(resp==2){
+			cout<<"Nuevo Numero: ";
+			cin>>str;
+			for (int i = 0; i < sizeof(Numero); i++){
+				Numero[i] = str[i];
+			}
+			int pos=(PosBinarySearch(l_indexLinea,key));
+			outFile.seekp(tamHeader+ l_indexLinea.at(pos).rrn*( sizeof(IdCliente)+ sizeof(Numero)) + sizeof(IdCliente));
+			outFile.write((char*)&Numero, sizeof(Numero));
+		}else{
+			cout<<"Valor invalido!"<<endl;
+		}
+	}else{
+		cout<<"Llave invalido!"<<endl;
+	}
+	outFile.close();
+}
