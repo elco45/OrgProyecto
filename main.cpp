@@ -1208,3 +1208,107 @@ void M_Linea(){
 	}
 	outFile.close();
 }
+
+//Reindexar
+void RI_Ciudad(){
+	ofstream indexFile("I_ciudad.bin");
+	for (int i = 0; i < l_indexCiudad.size(); i++){
+		indexFile.write((char*)&l_indexCiudad.at(i).llave, sizeof(l_indexCiudad.at(i).llave));
+		indexFile.write((char*)&l_indexCiudad.at(i).rrn, sizeof(l_indexCiudad.at(i).rrn));
+	}
+	indexFile.close();
+	bool flag=0;
+	ofstream outFile("ciudad.bin",ios::in|ios::out);
+	outFile.seekp( sizeof(int)+ sizeof(int));
+	outFile.write((char*)&flag, sizeof(flag));
+	outFile.close();
+}
+void RI_Cliente(){
+	ofstream indexFile("I_cliente.bin");
+	for (int i = 0; i < l_indexCliente.size(); i++){
+		indexFile.write((char*)&l_indexCliente.at(i).llave, sizeof(l_indexCliente.at(i).llave));
+		indexFile.write((char*)&l_indexCliente.at(i).rrn, sizeof(l_indexCliente.at(i).rrn));
+	}
+	indexFile.close();
+	bool flag=0;
+	ofstream outFile("cliente.bin",ios::in|ios::out);
+	outFile.seekp( sizeof(int)+ sizeof(int));
+	outFile.write((char*)&flag, sizeof(flag));
+	outFile.close();
+}
+void RI_Linea(){
+	ofstream indexFile("I_Linea.bin");
+	for (int i = 0; i < l_indexLinea.size(); i++){
+		indexFile.write((char*)&l_indexLinea.at(i).llave, sizeof(l_indexLinea.at(i).llave));
+		indexFile.write((char*)&l_indexLinea.at(i).rrn, sizeof(l_indexLinea.at(i).rrn));
+	}
+	indexFile.close();
+	bool flag=0;
+	ofstream outFile("linea.bin",ios::in|ios::out);
+	outFile.seekp( sizeof(int)+ sizeof(int));
+	outFile.write((char*)&flag, sizeof(flag));
+	outFile.close();
+}
+
+//Actualizar lista indice
+void RIL_Ciudad(){
+	ifstream indexFile("I_ciudad.bin");
+	unsigned long llave;
+	int rrn;
+	while(!indexFile.eof()){
+		indexFile.read((char*)&llave, sizeof(llave));
+		indexFile.read((char*)&rrn, sizeof(rrn));
+		Index ind;
+		ind.llave=llave;
+		ind.rrn=rrn;
+		if (ind.llave!=0){
+			l_indexCiudad.push_back(ind);
+		}
+	}
+	indexFile.close();
+}
+void RIL_Cliente(){
+	ifstream indexFile("I_cliente.bin");
+	unsigned long llave;
+	int rrn;
+	while(!indexFile.eof()){
+		indexFile.read((char*)&llave, sizeof(llave));
+		indexFile.read((char*)&rrn, sizeof(rrn));
+		Index ind;
+		ind.llave=llave;
+		ind.rrn=rrn;
+		if (ind.llave!=0){
+			l_indexCliente.push_back(ind);
+		}
+	}
+	indexFile.close();
+}
+void RIL_Linea(){
+	ifstream indexFile("I_linea.bin");
+	unsigned long llave;
+	int rrn;
+	while(!indexFile.eof()){
+		indexFile.read((char*)&llave, sizeof(llave));
+		indexFile.read((char*)&rrn, sizeof(rrn));
+		Index ind;
+		ind.llave=llave;
+		ind.rrn=rrn;
+		if (ind.llave!=0){
+			l_indexLinea.push_back(ind);
+		}
+	}
+	indexFile.close();
+}
+
+/*void sort(vector<Index> v){
+	Index ind;
+	for (int i = 0; i<= v.size()-1; i++){
+		for (int j = 0; j < v.size()-1; j++){
+			if (v.at(j).llave>v.at(j+1).llave){
+				ind=v.at(j);
+				v.erase(v.begin()+j);
+				v.insert(v.begin()+j+1,ind);
+			}
+		}
+	}
+}*/
