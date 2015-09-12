@@ -235,3 +235,182 @@ int menu(){
 		}
 	}
 }
+
+//Crear
+void WCiudadBin(){
+	ifstream inFile("ciudad.txt");
+	ofstream outFile("ciudad.bin");
+	int x;
+	int avail=-1;
+	int cantRegistros=30;
+	bool flag=0;
+	int rrn=0;
+	outFile.write((char*)&avail, sizeof(int));
+	outFile.write((char*)&cantRegistros, sizeof(int));
+	outFile.write((char*)&flag, sizeof(bool));
+	while(rrn<cantRegistros){
+		char NombreCiudad[40];
+		char IdCiudad[5];
+		string str1 = "", str2 = "";
+		getline(inFile, str1, ',');
+		getline(inFile, str2, ',');
+		for (int i = 0; i < sizeof(NombreCiudad); i++){
+			NombreCiudad[i] = str1[i];
+		}
+		for (int i = 0; i < sizeof(IdCiudad); i++){
+			IdCiudad[i] = str2[i];
+		}
+		Index ind;
+		ind.llave=atol(IdCiudad);
+		ind.rrn=rrn;
+		if (rrn!=0){
+			int pos=PosNuevoBinarySearch(l_indexCiudad, ind.llave);
+			if (pos==-1){
+				l_indexCiudad.push_back(ind);
+			}else{
+				l_indexCiudad.insert(l_indexCiudad.begin()+pos,ind);
+			}
+		}else{
+			l_indexCiudad.push_back(ind);
+		}
+		outFile.write((char*)IdCiudad, sizeof(IdCiudad));
+		outFile.write((char*)NombreCiudad, sizeof(NombreCiudad));
+		rrn++;
+	}
+	inFile.close();
+	outFile.close();
+}
+void WClienteBin(){
+	ifstream inFile("cliente.txt");
+	ofstream outFile("cliente.bin");
+	int avail=-1;
+	int cantRegistros=500;
+	bool flag=0;
+	int rrn=0;
+	outFile.write((char*)&avail, sizeof(int));
+	outFile.write((char*)&cantRegistros, sizeof(int));
+	outFile.write((char*)&flag, sizeof(bool));
+	while(rrn<cantRegistros){
+		char IdCliente[15];
+		char NombreCliente[40];
+		char Genero[2];
+		char IdCiudad[5];
+		string str1 = "", str2 = "",str3 = "",str4 = "";
+		getline(inFile, str1, ',');
+		getline(inFile, str2, ',');
+		getline(inFile, str3, ',');
+		getline(inFile, str4, ',');
+		for (int i = 0; i < sizeof(IdCliente); ++i){
+			IdCliente[i] = str1[i];
+		}
+		for (int i = 0; i < sizeof(NombreCliente); ++i){
+			NombreCliente[i] = str2[i];
+		}
+		for (int i = 0; i < sizeof(Genero); ++i){
+			Genero[i] = str3[i];
+		}
+		for (int i = 0; i < sizeof(IdCiudad); ++i){
+			IdCiudad[i] = str4[i];
+		}
+		Index ind;
+		ind.llave=atol(IdCliente);
+		ind.rrn=rrn;
+		if (rrn!=0){
+			int pos=PosNuevoBinarySearch(l_indexCliente, ind.llave);
+			if (pos==-1){
+				l_indexCliente.push_back(ind);
+			}else{
+				l_indexCliente.insert(l_indexCliente.begin()+pos,ind);
+			}
+		}else{
+			l_indexCliente.push_back(ind);
+		}
+		rrn++;
+		outFile.write((char*)IdCliente, sizeof(IdCliente));
+		outFile.write((char*)NombreCliente, sizeof(NombreCliente));
+		outFile.write((char*)Genero, sizeof(Genero));
+		outFile.write((char*)IdCiudad, sizeof(IdCiudad));
+	}
+	inFile.close();
+	outFile.close();	
+}
+void WLineaBin(){
+	ifstream inFile("linea.txt");
+	ofstream outFile("linea.bin");
+	int avail=-1;
+	int cantRegistros=500;
+	bool flag=0;
+	int rrn=0;
+	outFile.write((char*)&avail, sizeof(int));
+	outFile.write((char*)&cantRegistros, sizeof(int));
+	outFile.write((char*)&flag, sizeof(bool));
+	while(rrn<cantRegistros){
+		char IdCliente[14];
+		char Numero[9];
+		string str1 = "", str2 = "";
+		getline(inFile, str1, ',');
+		getline(inFile, str2, ',');
+		for (int i = 0; i < sizeof(IdCliente); ++i){
+			IdCliente[i] = str1[i];
+		}
+		for (int i = 0; i < sizeof(Numero); ++i){
+			Numero[i] = str2[i];
+		}
+		Index ind;
+		ind.llave=atol(IdCliente);
+		ind.rrn=rrn;
+		if (rrn!=0){
+			int pos=PosNuevoBinarySearch(l_indexLinea, ind.llave);
+			if (pos==-1){
+				l_indexLinea.push_back(ind);
+			}else{
+				l_indexLinea.insert(l_indexLinea.begin()+pos,ind);
+			}
+		}else{
+			l_indexLinea.push_back(ind);
+		}
+		rrn++;
+		outFile.write((char*)IdCliente, sizeof(IdCliente));
+		outFile.write((char*)Numero, sizeof(Numero));
+	}
+	inFile.close();
+	outFile.close();	
+}
+void WLlamadaBin(){
+	ifstream inFile("llamada.txt");
+	ofstream outFile("llamada.bin");
+	int avail=-1;
+	int cantRegistros=50000;
+	bool flag=0;
+	outFile.write((char*)&avail, sizeof(int));
+	outFile.write((char*)&cantRegistros, sizeof(int));
+	outFile.write((char*)&flag, sizeof(bool));
+	while(!inFile.eof()){
+		char Numero[9];
+		char inic[20];
+		char fin[20];
+		char IdCiudad[4];
+		string str1 = "", str2 = "",str3 = "",str4 = "";
+		getline(inFile, str1, ',');
+		getline(inFile, str2, ',');
+		getline(inFile, str3, ',');
+		getline(inFile, str4, ',');
+		for (int i = 0; i < sizeof(Numero); ++i){
+			Numero[i] = str1[i];
+		}
+		for (int i = 0; i < sizeof(inic); ++i){
+			inic[i] = str2[i];
+		}
+		for (int i = 0; i < sizeof(fin); ++i){
+			fin[i] = str3[i];
+		}
+		for (int i = 0; i < sizeof(IdCiudad); ++i){
+			IdCiudad[i] = str4[i];
+		}
+		outFile.write((char*)&Numero, sizeof(Numero));
+		outFile.write((char*)&inic, sizeof(inic));
+		outFile.write((char*)&fin, sizeof(fin));
+		outFile.write((char*)&IdCiudad, sizeof(IdCiudad));
+	}
+	inFile.close();
+}
