@@ -726,3 +726,109 @@ void B_Linea(){
 		cout<<"LLave invalido!"<<endl;
 	}
 }
+
+//Eliminar
+void E_Ciudad(){
+	unsigned long key;
+	cout<<"Ingrese la llave del registro a eliminar: ";
+	cin>>key;
+	if (binarySearch(l_indexCiudad,key,0,l_indexCiudad.size()-1)){
+		ifstream inFile("ciudad.bin",ios::binary);
+		bool flag=1;
+		int avail;
+		inFile.seekg(0);
+		inFile.read((char*)(&avail), sizeof(int));
+		inFile.close();
+		int pos=PosBinarySearch(l_indexCiudad, key);
+		int rrn=l_indexCiudad.at(pos).rrn;
+		char NombreCiudad[40];
+		char IdCiudad[5];
+		ofstream outFile("ciudad.bin",ios::out | ios::in);
+		outFile.seekp( tamHeader + (rrn*( sizeof(IdCiudad)+ sizeof(NombreCiudad))));
+		outFile.write((char*)"*", sizeof(IdCiudad));
+		stringstream ss;
+		ss<<avail;
+		for (int i = 0; i < sizeof(NombreCiudad); ++i){
+			NombreCiudad[i]=ss.str()[i];
+		}
+		outFile.write((char*)&NombreCiudad, sizeof(NombreCiudad));//avail
+		outFile.seekp(0);
+		outFile.write((char*)&rrn, sizeof(int));
+		outFile.seekp( sizeof(int)+ sizeof(int));
+		outFile.write((char*)&flag, sizeof(flag));
+		l_indexCiudad.erase(l_indexCiudad.begin()+rrn);
+		outFile.close();
+	}else{
+		cout<<"Llave invalido!"<<endl;
+	}
+}
+void E_Cliente(){
+	unsigned long key;
+	cout<<"Ingrese la llave del registro a eliminar: ";
+	cin>>key;
+	if (binarySearch(l_indexCliente,key,0,l_indexCliente.size()-1)){
+		ifstream inFile("cliente.bin",ios::binary);
+		bool flag=1;
+		int avail;
+		inFile.seekg(0);
+		inFile.read((char*)(&avail), sizeof(int));
+		inFile.close();
+		int pos=PosBinarySearch(l_indexCliente, key);
+		int rrn=l_indexCliente.at(pos).rrn;
+		char IdCliente[15];
+		char NombreCliente[40];
+		char Genero[2];
+		char IdCiudad[5];
+		ofstream outFile("cliente.bin",ios::out | ios::in);
+		outFile.seekp( tamHeader + (rrn*( sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero)+ sizeof(IdCiudad))));
+		outFile.write((char*)"*", sizeof(IdCliente));
+		stringstream ss;
+		ss<<avail;
+		for (int i = 0; i < sizeof(NombreCliente); ++i){
+			NombreCliente[i]=ss.str()[i];
+		}
+		outFile.write((char*)&NombreCliente, sizeof(NombreCliente));//avail
+		outFile.seekp(0);
+		outFile.write((char*)&rrn, sizeof(int));
+		outFile.seekp( sizeof(int)+ sizeof(int));
+		outFile.write((char*)&flag, sizeof(flag));
+		l_indexCliente.erase(l_indexCliente.begin()+rrn);
+		outFile.close();
+	}else{
+		cout<<"Llave invalido!"<<endl;
+	}
+}
+void E_Linea(){
+	unsigned long key;
+	cout<<"Ingrese la llave del registro a eliminar: ";
+	cin>>key;
+	if (binarySearch(l_indexLinea,key,0,l_indexLinea.size()-1)){
+		ifstream inFile("linea.bin",ios::binary);
+		bool flag=1;
+		int avail;
+		inFile.seekg(0);
+		inFile.read((char*)(&avail), sizeof(int));
+		inFile.close();
+		int pos=PosBinarySearch(l_indexLinea, key);
+		int rrn=l_indexLinea.at(pos).rrn;
+		char IdCliente[14];
+		char Numero[9];
+		ofstream outFile("linea.bin",ios::out | ios::in);
+		outFile.seekp( tamHeader + (rrn*( sizeof(IdCliente)+ sizeof(Numero))));
+		outFile.write((char*)"*", sizeof(IdCliente));
+		stringstream ss;
+		ss<<avail;
+		for (int i = 0; i < sizeof(Numero); ++i){
+			Numero[i]=ss.str()[i];
+		}
+		outFile.write((char*)&Numero, sizeof(Numero));//avail
+		outFile.seekp(0);
+		outFile.write((char*)&rrn, sizeof(int));
+		outFile.seekp( sizeof(int)+ sizeof(int));
+		outFile.write((char*)&flag, sizeof(flag));
+		l_indexLinea.erase(l_indexLinea.begin()+rrn);
+		outFile.close();
+	}else{
+		cout<<"Llave invalido!"<<endl;
+	}	
+}
