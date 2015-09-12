@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 #include <QVector>
-
+#include <QDebug>
 #include  <QFile>
 struct Index{
     unsigned long llave;
@@ -26,7 +28,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 int PosNuevoBinarySearch(QVector<Index> v,unsigned long key){
     int izquierda = 0;
     int derecha = v.size() - 1;
@@ -107,11 +108,15 @@ bool binarySearch(QVector<Index> v, unsigned long key, int start,int end){
     }
 }
 
+
 void MainWindow::on_bt_crear_clicked()
 {
 
-    QFile inFile("ciudad.txt");
-    QFile outFile("ciudad.bin");
+    QFile inFile("/home/xavier/Música/OrgProyecto/proyecto_orga/ciudad.txt");
+    QFile outFile("/home/xavier/Música/OrgProyecto/proyecto_orga/ciudad.bin");
+    outFile.open(QIODevice::WriteOnly);
+    inFile.open(QIODevice::ReadOnly);
+    QDataStream dataStreamWriter(&outFile);
     int x;
     int avail=-1;
     int cantRegistros=30;
@@ -120,39 +125,101 @@ void MainWindow::on_bt_crear_clicked()
     outFile.write((char*)&avail, sizeof(int));
     outFile.write((char*)&cantRegistros, sizeof(int));
     outFile.write((char*)&flag, sizeof(bool));
-    inFile.open(QIODevice::ReadOnly);
-   // QTextStream buff(&inFile);
+    qDebug()<<"escrrbi header";
+    QTextStream textStream(&inFile);
     while(rrn<cantRegistros){
+
         QChar NombreCiudad[40];
         QChar IdCiudad[5];
         QString str1 = "";
         QString str2 = "";
-
-        getline(inFile, str1, ',');
-        getline(inFile, str2, ',');
-        for (int i = 0; i < sizeof(NombreCiudad); i++){
-            NombreCiudad[i] = str1[i];
-        }
-        for (int i = 0; i < sizeof(IdCiudad); i++){
-            IdCiudad[i] = str2[i];
-         }
-        Index ind;
-        ind.llave = (unsigned long)IdCiudad;
-        ind.rrn=rrn;
-        if (rrn!=0){
-            int pos=PosNuevoBinarySearch(l_indexCiudad, ind.llave);
-            if (pos==-1){
-                l_indexCiudad.push_back(ind);
-            }else{
-                l_indexCiudad.insert(l_indexCiudad.begin()+pos,ind);
-            }
+        QStringList stringList;
+        QString line;
+        line= textStream.readLine();
+        if (line.size()==0){
+            qDebug()<<"breque";
+            break;
         }else{
-            l_indexCiudad.push_back(ind);
+            qDebug()<<line;
+            stringList = line.split(",");
+            str1 = stringList.takeFirst();
+            str2 = stringList.takeLast();
+            for (int i = 0; i < sizeof(NombreCiudad); i++){
+                NombreCiudad[i] = str1[i];
+
+           }
+           for (int i = 0; i < sizeof(IdCiudad); i++){
+               IdCiudad[i] = str2[i];
+           }
+           Index ind;
+           ind.llave = (unsigned long)IdCiudad;
+           ind.rrn=rrn;
+           if (rrn!=0){
+               int pos=PosNuevoBinarySearch(l_indexCiudad, ind.llave);
+               if (pos==-1){
+                   l_indexCiudad.push_back(ind);
+               }else{
+                   l_indexCiudad.insert(l_indexCiudad.begin()+pos,ind);
+               }
+           }else{
+               l_indexCiudad.push_back(ind);
+           }
+
+           outFile.write((char*)IdCiudad, sizeof(IdCiudad));
+           outFile.write((char*)NombreCiudad, sizeof(NombreCiudad));
+
         }
-        outFile.write((char*)IdCiudad, sizeof(IdCiudad));
-        outFile.write((char*)NombreCiudad, sizeof(NombreCiudad));
+
         rrn++;
+
     }
     inFile.close();
     outFile.close();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
+
+
+}
+
+void MainWindow::on_combo_listar_activated(int index)
+{
+    if(index==0){
+            QFile inFile("/home/xavier/Música/OrgProyecto/proyecto_orga/ciudad.bin");
+            inFile.open(QIODevice::ReadOnly);
+            inFile.seek(0);
+            int avail;
+            int cantRegistros;
+            bool flag;
+            inFile.read((char*)&avail, sizeof(int));
+            inFile.read((char*)&cantRegistros, sizeof(int));
+            inFile.read((char*)&flag, sizeof(bool));
+            qDebug()<<avail<<", "<<cantRegistros<<", "<<flag;
+            int cont=0;
+            while(cont<cantRegistros){
+                char IdCiudad[5];
+                char NombreCiudad[40];
+                inFile.read((char*)IdCiudad, sizeof(IdCiudad));
+                inFile.read((char*)NombreCiudad, sizeof(NombreCiudad));
+
+                        qDebug()<<(QString)IdCiudad[0]<<(QString)IdCiudad[1]<<(QString)IdCiudad[2];
+
+                    //qDebug()<<(QString)IdCiudad<<","<<NombreCiudad;
+
+                cont++;
+            }
+            inFile.close();
+
+    }
+}
+
+void MainWindow::on_tab_porincipal_tabBarClicked(int index)
+{
+    if(index==1){
+        ui->combo_listar->addItem("Ciudad");
+        ui->combo_listar->addItem("Cliente");
+        ui->combo_listar->addItem("lineas");
+    }
 }

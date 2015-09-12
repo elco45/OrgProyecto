@@ -20,6 +20,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_combo_listar_activated(int index);
+
+    void on_tab_porincipal_tabBarClicked(int index);
+
 private:
     Ui::MainWindow *ui;
 };
