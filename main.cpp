@@ -591,3 +591,63 @@ bool binarySearch(vector<Index> v, unsigned long key, int start,int end){
         }
     }
 }
+
+//Buscar con indice
+void BI_Ciudad(){
+	unsigned long key;
+	cout<<"Ingrese ID Ciudad: ";
+	cin>>key;
+	if (binarySearch(l_indexCiudad,key,0,l_indexCiudad.size()-1)){
+		ifstream inFile("ciudad.bin",ios::binary);
+		int pos=PosBinarySearch(l_indexCiudad,key);
+		char IdCiudad[5];
+		char NombreCiudad[40];
+		inFile.seekg(tamHeader+l_indexCiudad.at(pos).rrn*( sizeof(IdCiudad)+ sizeof(NombreCiudad)));
+		inFile.read((char*)&IdCiudad, sizeof(IdCiudad));
+		inFile.read((char*)&NombreCiudad, sizeof(NombreCiudad));
+		inFile.close();
+		cout<<IdCiudad<<","<<NombreCiudad<<endl;
+	}else{
+		cout<<"LLave invalido!"<<endl;
+	}
+}
+void BI_Cliente(){
+	unsigned long key;
+	cout<<"Ingrese ID Cliente: ";
+	cin>>key;
+	if (binarySearch(l_indexCliente,key,0,l_indexCliente.size()-1)){
+		ifstream inFile("cliente.bin",ios::binary);
+		int pos=PosBinarySearch(l_indexCliente,key);
+		char IdCliente[15];
+		char NombreCliente[40];
+		char Genero[2];
+		char IdCiudad[5];
+		inFile.seekg(tamHeader+l_indexCliente.at(pos).rrn*( sizeof(IdCliente)+ sizeof(NombreCliente)+ sizeof(Genero)+ sizeof(IdCiudad) ));
+		inFile.read((char*)&IdCliente, sizeof(IdCliente));
+		inFile.read((char*)&NombreCliente, sizeof(NombreCliente));
+		inFile.read((char*)&Genero, sizeof(Genero));
+		inFile.read((char*)&IdCiudad, sizeof(IdCiudad));
+		inFile.close();
+		cout <<IdCliente << "," << NombreCliente << "," << Genero << "," << IdCiudad <<endl;
+	}else{
+		cout<<"LLave invalido!"<<endl;
+	}
+}
+void BI_Linea(){
+	unsigned long key;
+	cout<<"Ingrese ID Cliente: ";
+	cin>>key;
+	if (binarySearch(l_indexLinea,key,0,l_indexLinea.size()-1)){
+		ifstream inFile("linea.bin",ios::binary);
+		int pos=PosBinarySearch(l_indexLinea,key);
+		char IdCliente[14];
+		char Numero[9];
+		inFile.seekg(tamHeader+ l_indexLinea.at(pos).rrn*( sizeof(IdCliente)+ sizeof(Numero)));
+		inFile.read((char*)&IdCliente, sizeof(IdCliente));
+		inFile.read((char*)&Numero, sizeof(Numero));
+		inFile.close();
+		cout<<IdCliente<<","<<Numero<<endl;
+	}else{
+		cout<<"LLave invalido!"<<endl;
+	}
+}
