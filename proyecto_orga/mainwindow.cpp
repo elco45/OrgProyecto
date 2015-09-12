@@ -129,47 +129,47 @@ void MainWindow::on_bt_crear_clicked()
     QTextStream textStream(&inFile);
     while(rrn<cantRegistros){
 
-        QChar NombreCiudad[40];
-        QChar IdCiudad[5];
-        QString str1 = "";
-        QString str2 = "";
-        QStringList stringList;
         QString line;
         line= textStream.readLine();
-        if (line.size()==0){
+        if (line.isNull()){
             qDebug()<<"breque";
             break;
         }else{
-            qDebug()<<line;
+            QChar NombreCiudad[40];
+            QChar IdCiudad[5];
+            QString str1 = "";
+            QString str2 = "";
+            QStringList stringList;
             stringList = line.split(",");
             str1 = stringList.takeFirst();
             str2 = stringList.takeLast();
-            for (int i = 0; i < sizeof(NombreCiudad); i++){
+            for (int i = 0; i < str1.size(); i++){
                 NombreCiudad[i] = str1[i];
 
-           }
-           for (int i = 0; i < sizeof(IdCiudad); i++){
-               IdCiudad[i] = str2[i];
-           }
-           Index ind;
-           ind.llave = (unsigned long)IdCiudad;
-           ind.rrn=rrn;
-           if (rrn!=0){
-               int pos=PosNuevoBinarySearch(l_indexCiudad, ind.llave);
-               if (pos==-1){
-                   l_indexCiudad.push_back(ind);
-               }else{
-                   l_indexCiudad.insert(l_indexCiudad.begin()+pos,ind);
-               }
-           }else{
-               l_indexCiudad.push_back(ind);
-           }
+            }
+            for (int i = 0; i < str2.size(); i++){
+                IdCiudad[i] = str2[i];
+            }
+            Index ind;
+            ind.llave = (unsigned long)IdCiudad;
+            ind.rrn=rrn;
+            if (rrn!=0){
+                int pos=PosNuevoBinarySearch(l_indexCiudad, ind.llave);
+                if (pos==-1){
+                    l_indexCiudad.push_back(ind);
+                }else{
+                    l_indexCiudad.insert(l_indexCiudad.begin()+pos,ind);
+                }
+            }else{
+                l_indexCiudad.push_back(ind);
+            }
 
-           outFile.write((char*)IdCiudad, sizeof(IdCiudad));
-           outFile.write((char*)NombreCiudad, sizeof(NombreCiudad));
+            outFile.write((char*)IdCiudad, sizeof(IdCiudad));
+            outFile.write((char*)NombreCiudad, sizeof(NombreCiudad));
+            qDebug()<<(QString)IdCiudad;
+            qDebug()<<(QString)NombreCiudad;
 
         }
-
         rrn++;
 
     }
@@ -187,30 +187,29 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_combo_listar_activated(int index)
 {
     if(index==0){
-            QFile inFile("/home/xavier/Música/OrgProyecto/proyecto_orga/ciudad.bin");
-            inFile.open(QIODevice::ReadOnly);
-            inFile.seek(0);
-            int avail;
-            int cantRegistros;
-            bool flag;
-            inFile.read((char*)&avail, sizeof(int));
-            inFile.read((char*)&cantRegistros, sizeof(int));
-            inFile.read((char*)&flag, sizeof(bool));
-            qDebug()<<avail<<", "<<cantRegistros<<", "<<flag;
-            int cont=0;
-            while(cont<cantRegistros){
-                char IdCiudad[5];
-                char NombreCiudad[40];
-                inFile.read((char*)IdCiudad, sizeof(IdCiudad));
-                inFile.read((char*)NombreCiudad, sizeof(NombreCiudad));
+        QFile inFile("/home/xavier/Música/OrgProyecto/proyecto_orga/ciudad.bin");
+        inFile.open(QIODevice::ReadOnly);
+        inFile.seek(0);
+        int avail;
+        int cantRegistros;
+        bool flag;
+        inFile.read((char*)&avail, sizeof(int));
+        inFile.read((char*)&cantRegistros, sizeof(int));
+        inFile.read((char*)&flag, sizeof(bool));
+        qDebug()<<avail<<", "<<cantRegistros<<", "<<flag;
+        int conta=0;
+        while(conta<30){
 
-                        qDebug()<<(QString)IdCiudad[0]<<(QString)IdCiudad[1]<<(QString)IdCiudad[2];
+            QChar NombreCiudad[40];
+            QChar id[5];
+            inFile.read((char*)id, sizeof(id));
+            inFile.read((char*)NombreCiudad ,sizeof(NombreCiudad));
+            conta++;
+            ui->text_area_listar->append((QString)id+" - "+(QString)NombreCiudad);
+        }
+        //qDebug()<<(QString)IdCiudad<<","<<NombreCiudad;
 
-                    //qDebug()<<(QString)IdCiudad<<","<<NombreCiudad;
-
-                cont++;
-            }
-            inFile.close();
+        inFile.close();
 
     }
 }
