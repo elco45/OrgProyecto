@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -96,7 +96,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_10">
        <attribute name="title">
@@ -332,7 +332,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>PushButton</string>
+         <string>Agregar</string>
         </property>
        </widget>
       </widget>
@@ -342,169 +342,358 @@
      <attribute name="title">
       <string>Buscar</string>
      </attribute>
-     <widget class="QTabWidget" name="tab_buscar">
+     <widget class="QTabWidget" name="bucar_tab2">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>671</width>
-        <height>391</height>
+        <x>20</x>
+        <y>10</y>
+        <width>621</width>
+        <height>361</height>
        </rect>
       </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_13">
+      <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Cliente</string>
+        <string>con indice</string>
        </attribute>
-       <widget class="QPushButton" name="bt_buscar_cliente_2">
+       <widget class="QTabWidget" name="tab_buscar">
         <property name="geometry">
          <rect>
-          <x>370</x>
-          <y>50</y>
-          <width>99</width>
-          <height>27</height>
+          <x>20</x>
+          <y>10</y>
+          <width>581</width>
+          <height>301</height>
          </rect>
         </property>
-        <property name="text">
-         <string>buscar</string>
+        <property name="currentIndex">
+         <number>2</number>
         </property>
-       </widget>
-       <widget class="QLineEdit" name="txt_buscar_idcliente">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>50</y>
-          <width>113</width>
-          <height>27</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QTextEdit" name="textEdit_buscar_cliente">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>110</y>
-          <width>471</width>
-          <height>111</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lbl_buscar_idcliente">
-        <property name="geometry">
-         <rect>
-          <x>117</x>
-          <y>50</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Id Cliente</string>
-        </property>
+        <widget class="QWidget" name="tab_13">
+         <attribute name="title">
+          <string>Cliente</string>
+         </attribute>
+         <widget class="QPushButton" name="bt_buscar_cliente_2">
+          <property name="geometry">
+           <rect>
+            <x>370</x>
+            <y>50</y>
+            <width>99</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>buscar</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txt_buscar_idcliente">
+          <property name="geometry">
+           <rect>
+            <x>250</x>
+            <y>50</y>
+            <width>113</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="textEdit_buscar_cliente">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>110</y>
+            <width>471</width>
+            <height>111</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_buscar_idcliente">
+          <property name="geometry">
+           <rect>
+            <x>117</x>
+            <y>50</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Id Cliente</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_14">
+         <attribute name="title">
+          <string>Ciudad</string>
+         </attribute>
+         <widget class="QPushButton" name="bt_buscar_ciudad_2">
+          <property name="geometry">
+           <rect>
+            <x>330</x>
+            <y>50</y>
+            <width>99</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>buscar</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_buscar_idcliente_2">
+          <property name="geometry">
+           <rect>
+            <x>77</x>
+            <y>50</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Id Ciudad</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txt_buscar_idciudad">
+          <property name="geometry">
+           <rect>
+            <x>210</x>
+            <y>50</y>
+            <width>113</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="textEdit_buscar_ciudad">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>110</y>
+            <width>471</width>
+            <height>111</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_15">
+         <attribute name="title">
+          <string>lineas</string>
+         </attribute>
+         <widget class="QPushButton" name="bt_buscar_linea_2">
+          <property name="geometry">
+           <rect>
+            <x>350</x>
+            <y>50</y>
+            <width>99</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>buscar</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txt_buscar_idlinea">
+          <property name="geometry">
+           <rect>
+            <x>230</x>
+            <y>50</y>
+            <width>113</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_buscar_idcliente_3">
+          <property name="geometry">
+           <rect>
+            <x>97</x>
+            <y>50</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Id Cliente</string>
+          </property>
+         </widget>
+         <widget class="QTextEdit" name="textEdit_buscar_linea">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>110</y>
+            <width>471</width>
+            <height>111</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_14">
+      <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>Ciudad</string>
+        <string>Sin indice</string>
        </attribute>
-       <widget class="QPushButton" name="bt_buscar_ciudad_2">
+       <widget class="QTabWidget" name="tab2_buscar_sin_indice">
         <property name="geometry">
          <rect>
-          <x>330</x>
-          <y>50</y>
-          <width>99</width>
-          <height>27</height>
+          <x>10</x>
+          <y>10</y>
+          <width>591</width>
+          <height>301</height>
          </rect>
         </property>
-        <property name="text">
-         <string>buscar</string>
+        <property name="currentIndex">
+         <number>2</number>
         </property>
-       </widget>
-       <widget class="QLabel" name="lbl_buscar_idcliente_2">
-        <property name="geometry">
-         <rect>
-          <x>77</x>
-          <y>50</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Id Ciudad</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="txt_buscar_idciudad">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>50</y>
-          <width>113</width>
-          <height>27</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QTextEdit" name="textEdit_buscar_ciudad">
-        <property name="geometry">
-         <rect>
-          <x>80</x>
-          <y>110</y>
-          <width>471</width>
-          <height>111</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_15">
-       <attribute name="title">
-        <string>lineas</string>
-       </attribute>
-       <widget class="QPushButton" name="bt_buscar_linea_2">
-        <property name="geometry">
-         <rect>
-          <x>350</x>
-          <y>50</y>
-          <width>99</width>
-          <height>27</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>buscar</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="txt_buscar_idlinea">
-        <property name="geometry">
-         <rect>
-          <x>230</x>
-          <y>50</y>
-          <width>113</width>
-          <height>27</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="lbl_buscar_idcliente_3">
-        <property name="geometry">
-         <rect>
-          <x>97</x>
-          <y>50</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Id Cliente</string>
-        </property>
-       </widget>
-       <widget class="QTextEdit" name="textEdit_buscar_linea">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>110</y>
-          <width>471</width>
-          <height>111</height>
-         </rect>
-        </property>
+        <widget class="QWidget" name="tab_22">
+         <attribute name="title">
+          <string>Cliente</string>
+         </attribute>
+         <widget class="QTextEdit" name="textEdit_buscar_cliente_sin">
+          <property name="geometry">
+           <rect>
+            <x>103</x>
+            <y>110</y>
+            <width>471</width>
+            <height>111</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_buscar_idcliente_sin">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>50</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Id Cliente</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txt_buscar_idcliente_sin">
+          <property name="geometry">
+           <rect>
+            <x>233</x>
+            <y>50</y>
+            <width>113</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="bt_buscar_cliente_sin">
+          <property name="geometry">
+           <rect>
+            <x>353</x>
+            <y>50</y>
+            <width>99</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>buscar</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_23">
+         <attribute name="title">
+          <string>Ciudad</string>
+         </attribute>
+         <widget class="QTextEdit" name="textEdit_buscar_ciudad_sin">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>110</y>
+            <width>471</width>
+            <height>111</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_buscar_idciudad_sin">
+          <property name="geometry">
+           <rect>
+            <x>77</x>
+            <y>50</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Id Cliente</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txt_buscar_idciudad_sin">
+          <property name="geometry">
+           <rect>
+            <x>210</x>
+            <y>50</y>
+            <width>113</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="bt_buscar_ciudad_sin">
+          <property name="geometry">
+           <rect>
+            <x>330</x>
+            <y>50</y>
+            <width>99</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>buscar</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_24">
+         <attribute name="title">
+          <string>lineas</string>
+         </attribute>
+         <widget class="QTextEdit" name="textEdit_buscar_linea_sin">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>110</y>
+            <width>471</width>
+            <height>111</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="lbl_buscar_idlinea_sin">
+          <property name="geometry">
+           <rect>
+            <x>57</x>
+            <y>50</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Id Cliente</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="txt_buscar_idlinea_sin">
+          <property name="geometry">
+           <rect>
+            <x>190</x>
+            <y>50</y>
+            <width>113</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="bt_buscar_linea_sin">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>50</y>
+            <width>99</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>buscar</string>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -523,7 +712,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_16">
        <attribute name="title">
@@ -690,14 +879,27 @@
      <widget class="QPushButton" name="boto_reindexar">
       <property name="geometry">
        <rect>
-        <x>100</x>
-        <y>40</y>
-        <width>451</width>
-        <height>321</height>
+        <x>20</x>
+        <y>120</y>
+        <width>291</width>
+        <height>141</height>
        </rect>
       </property>
       <property name="text">
        <string>Reindexar</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="boto_actualizar_index">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>120</y>
+        <width>281</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>ACtualizar Index</string>
       </property>
      </widget>
     </widget>

@@ -24,6 +24,26 @@ private slots:
 
     void on_tab_porincipal_tabBarClicked(int index);
 
+    void on_bt_buscar_ciudad_2_clicked();
+
+    void on_bt_buscar_linea_2_clicked();
+
+    void on_bt_buscar_ciudad_sin_clicked();
+
+    void on_bt_buscar_linea_sin_clicked();
+
+    void on_bt_buscar_ciudad_clicked();
+
+    void on_boto_reindexar_clicked();
+
+    void on_boto_actualizar_index_clicked();
+
+    void on_bucar_tab2_destroyed(QObject *arg1);
+
+    void on_bucar_tab2_tabBarClicked(int index);
+
+    void on_bt_agregar_ciudad_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
