@@ -413,7 +413,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tab_porincipal->setCurrentIndex(2);
+        tab_porincipal->setCurrentIndex(0);
         tab_agregar->setCurrentIndex(2);
         bucar_tab2->setCurrentIndex(0);
         tab_buscar->setCurrentIndex(2);

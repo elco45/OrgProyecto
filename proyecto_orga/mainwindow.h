@@ -44,6 +44,8 @@ private slots:
 
     void on_bt_agregar_ciudad_clicked();
 
+    void on_combo_listar_activated(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 };

@@ -6,6 +6,10 @@
 #include <QDebug>
 #include  <QFile>
 #include <QMessageBox>
+#include <fstream>
+#include <iostream>
+#include <ostream>
+
 struct Index{
     unsigned long  llave;
     int rrn;
@@ -605,8 +609,19 @@ void MainWindow::on_bt_agregar_ciudad_clicked()
                         for (int i = 0; i < sizeof(id); i++){
                             IdCiudad[i] = id[i];
                         }
+
+                 //       ofstream outFile("/home/xavier/Música/OrgProyecto/proyecto_orga/ciudad.bin");
+                        //Trabajando en  esta parte
+
+
+
            qDebug()<<(QString)NombreCiudad<<" "<<(QString)IdCiudad<<" "<<binarySearch(l_indexCiudad,ide,0,l_indexCiudad.size()-1);
     }
 
+
+}
+
+void MainWindow::on_combo_listar_activated(const QString &arg1)
+{
 
 }
