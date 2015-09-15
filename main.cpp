@@ -339,7 +339,7 @@ void WLineaBin(){
 	ifstream inFile("linea.txt");
 	ofstream outFile("linea.bin");
 	int avail=-1;
-	int cantRegistros=500;
+	int cantRegistros=750;
 	bool flag=0;
 	int rrn=0;
 	outFile.write((char*)&avail, sizeof(int));
@@ -387,7 +387,8 @@ void WLlamadaBin(){
 	outFile.write((char*)&avail, sizeof(int));
 	outFile.write((char*)&cantRegistros, sizeof(int));
 	outFile.write((char*)&flag, sizeof(bool));
-	while(!inFile.eof()){
+	int rrn=0;
+	while(rrn<cantRegistros){
 		char Numero[9];
 		char inic[20];
 		char fin[20];
@@ -414,6 +415,7 @@ void WLlamadaBin(){
 		outFile.write((char*)&inic, sizeof(inic));
 		outFile.write((char*)&fin, sizeof(fin));
 		outFile.write((char*)&Destino, sizeof(Destino));
+		rrn++;
 	}
 	inFile.close();
 }
