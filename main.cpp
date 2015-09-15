@@ -251,9 +251,10 @@ void WCiudadBin(){
 	while(rrn<cantRegistros){
 		char NombreCiudad[40];
 		char IdCiudad[5];
-		string str1 = "", str2 = "";
+		string str1 = "", str2 = "",nada;
 		getline(inFile, str1, ',');
 		getline(inFile, str2, ',');
+		getline(inFile,nada,'\n');
 		for (int i = 0; i < sizeof(NombreCiudad); i++){
 			NombreCiudad[i] = str1[i];
 		}
@@ -299,7 +300,7 @@ void WClienteBin(){
 		getline(inFile, str1, ',');
 		getline(inFile, str2, ',');
 		getline(inFile, str3, ',');
-		getline(inFile, str4, ',');
+		getline(inFile, str4, '\n');
 		for (int i = 0; i < sizeof(IdCliente); ++i){
 			IdCliente[i] = str1[i];
 		}
@@ -347,9 +348,10 @@ void WLineaBin(){
 	while(rrn<cantRegistros){
 		char IdCliente[14];
 		char Numero[9];
-		string str1 = "", str2 = "";
+		string str1 = "", str2 = "",nada;
 		getline(inFile, str1, ',');
 		getline(inFile, str2, ',');
+		getline(inFile,nada,'\n');
 		for (int i = 0; i < sizeof(IdCliente); ++i){
 			IdCliente[i] = str1[i];
 		}
@@ -389,12 +391,13 @@ void WLlamadaBin(){
 		char Numero[9];
 		char inic[20];
 		char fin[20];
-		char IdCiudad[4];
-		string str1 = "", str2 = "",str3 = "",str4 = "";
+		char Destino[9];
+		string str1 = "", str2 = "",str3 = "",str4 = "",nada;
 		getline(inFile, str1, ',');
 		getline(inFile, str2, ',');
 		getline(inFile, str3, ',');
 		getline(inFile, str4, ',');
+		getline(inFile,nada,'\n');
 		for (int i = 0; i < sizeof(Numero); ++i){
 			Numero[i] = str1[i];
 		}
@@ -404,13 +407,13 @@ void WLlamadaBin(){
 		for (int i = 0; i < sizeof(fin); ++i){
 			fin[i] = str3[i];
 		}
-		for (int i = 0; i < sizeof(IdCiudad); ++i){
-			IdCiudad[i] = str4[i];
+		for (int i = 0; i < sizeof(Destino); ++i){
+			Destino[i] = str4[i];
 		}
 		outFile.write((char*)&Numero, sizeof(Numero));
 		outFile.write((char*)&inic, sizeof(inic));
 		outFile.write((char*)&fin, sizeof(fin));
-		outFile.write((char*)&IdCiudad, sizeof(IdCiudad));
+		outFile.write((char*)&Destino, sizeof(Destino));
 	}
 	inFile.close();
 }
@@ -500,12 +503,12 @@ void L_LlamadaBin(){
 		char Numero[9];
 		char inic[20];
 		char fin[20];
-		char IdCiudad[4];
+		char Destino[9];
 		inFile.read((char*)&Numero, sizeof(Numero));
 		inFile.read((char*)&inic, sizeof(inic));
 		inFile.read((char*)&fin, sizeof(fin));
-		inFile.read((char*)&IdCiudad, sizeof(IdCiudad));
-		cout <<Numero << "," << inic << "," << fin << "," << IdCiudad <<endl;
+		inFile.read((char*)&Destino, sizeof(Destino));
+		cout <<Numero << "," << inic << "," << fin << "," << Destino <<endl;
 		cont++;
 	}
 	inFile.close();
@@ -524,7 +527,7 @@ int PosNuevoBinarySearch(vector<Index> v,unsigned long key){
     			if(key < v.at(medio+1).llave){
     				return medio+1;
     			}else{
-    				if(fin && medio == v.size()-1){
+    				if(fin && medio == v.size()-2){
     					return -1;
     				}
     				izquierda = medio;
