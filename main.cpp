@@ -359,7 +359,7 @@ void WLineaBin(){
 			Numero[i] = str2[i];
 		}
 		Index ind;
-		ind.llave=atol(IdCliente);
+		ind.llave=atol(Numero);
 		ind.rrn=rrn;
 		if (rrn!=0){
 			int pos=PosNuevoBinarySearch(l_indexLinea, ind.llave);
@@ -720,7 +720,7 @@ void B_Linea(){
 		char Numero[9];
 		inFile.read((char*)&IdCliente, sizeof(IdCliente));
 		inFile.read((char*)&Numero, sizeof(Numero));
-		if (atol(IdCliente)==key){
+		if (atol(Numero)==key){
 			stringstream ss;
 			cout<<IdCliente<<","<<Numero<<endl;
 			encontrado=true;
@@ -1175,7 +1175,7 @@ void M_Linea(){
 	unsigned long key;
 	int resp;
 	string str;
-	cout<<"Ingrese el ID Cliente del registro a modificar: ";
+	cout<<"Ingrese el numero del registro a modificar: ";
 	cin>>key;
 	if (binarySearch(l_indexLinea,key,0,l_indexLinea.size()-1)){
 		cout<<"1. Id Cliente\n"
