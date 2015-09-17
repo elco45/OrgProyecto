@@ -35,7 +35,9 @@ public:
     QTabWidget *tab_porincipal;
     QWidget *tab;
     QPushButton *bt_crear;
-    QPushButton *pushButton;
+    QPushButton *Crear_liente;
+    QPushButton *crear_lineas;
+    QPushButton *Crearllamadas;
     QWidget *tab_2;
     QComboBox *combo_listar;
     QTextEdit *text_area_listar;
@@ -104,7 +106,7 @@ public:
     QWidget *tab_16;
     QLineEdit *tzt_buscar_ciudad;
     QLabel *lb_buscar_ciudad;
-    QPushButton *bt_buscar_ciudad;
+    QPushButton *Eliminar_ciudad;
     QWidget *tab_17;
     QPushButton *bt_buscar_cliente;
     QLabel *lb_busca_cliente;
@@ -139,10 +141,16 @@ public:
         tab->setObjectName(QStringLiteral("tab"));
         bt_crear = new QPushButton(tab);
         bt_crear->setObjectName(QStringLiteral("bt_crear"));
-        bt_crear->setGeometry(QRect(240, 170, 99, 27));
-        pushButton = new QPushButton(tab);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(120, 230, 99, 27));
+        bt_crear->setGeometry(QRect(70, 140, 99, 27));
+        Crear_liente = new QPushButton(tab);
+        Crear_liente->setObjectName(QStringLiteral("Crear_liente"));
+        Crear_liente->setGeometry(QRect(200, 140, 99, 27));
+        crear_lineas = new QPushButton(tab);
+        crear_lineas->setObjectName(QStringLiteral("crear_lineas"));
+        crear_lineas->setGeometry(QRect(310, 140, 99, 27));
+        Crearllamadas = new QPushButton(tab);
+        Crearllamadas->setObjectName(QStringLiteral("Crearllamadas"));
+        Crearllamadas->setGeometry(QRect(430, 140, 99, 27));
         tab_porincipal->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -346,9 +354,9 @@ public:
         lb_buscar_ciudad = new QLabel(tab_16);
         lb_buscar_ciudad->setObjectName(QStringLiteral("lb_buscar_ciudad"));
         lb_buscar_ciudad->setGeometry(QRect(140, 60, 91, 17));
-        bt_buscar_ciudad = new QPushButton(tab_16);
-        bt_buscar_ciudad->setObjectName(QStringLiteral("bt_buscar_ciudad"));
-        bt_buscar_ciudad->setGeometry(QRect(250, 140, 99, 27));
+        Eliminar_ciudad = new QPushButton(tab_16);
+        Eliminar_ciudad->setObjectName(QStringLiteral("Eliminar_ciudad"));
+        Eliminar_ciudad->setGeometry(QRect(250, 140, 99, 27));
         tab_eliminar_2->addTab(tab_16, QString());
         tab_17 = new QWidget();
         tab_17->setObjectName(QStringLiteral("tab_17"));
@@ -413,12 +421,12 @@ public:
 
         retranslateUi(MainWindow);
 
-        tab_porincipal->setCurrentIndex(0);
-        tab_agregar->setCurrentIndex(2);
-        bucar_tab2->setCurrentIndex(0);
-        tab_buscar->setCurrentIndex(2);
+        tab_porincipal->setCurrentIndex(6);
+        tab_agregar->setCurrentIndex(1);
+        bucar_tab2->setCurrentIndex(1);
+        tab_buscar->setCurrentIndex(1);
         tab2_buscar_sin_indice->setCurrentIndex(2);
-        tab_eliminar_2->setCurrentIndex(0);
+        tab_eliminar_2->setCurrentIndex(2);
         tab_modificar->setCurrentIndex(0);
 
 
@@ -428,8 +436,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        bt_crear->setText(QApplication::translate("MainWindow", "Crear", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "PushButton", 0));
+        bt_crear->setText(QApplication::translate("MainWindow", "Crear ciudad", 0));
+        Crear_liente->setText(QApplication::translate("MainWindow", "crear cliente", 0));
+        crear_lineas->setText(QApplication::translate("MainWindow", "Crear lineas", 0));
+        Crearllamadas->setText(QApplication::translate("MainWindow", "Crear LLamadas", 0));
         tab_porincipal->setTabText(tab_porincipal->indexOf(tab), QApplication::translate("MainWindow", "Crear", 0));
         tab_porincipal->setTabText(tab_porincipal->indexOf(tab_2), QApplication::translate("MainWindow", "listar", 0));
         label->setText(QApplication::translate("MainWindow", "idCliente", 0));
@@ -469,7 +479,7 @@ public:
         bucar_tab2->setTabText(bucar_tab2->indexOf(tab_4), QApplication::translate("MainWindow", "Sin indice", 0));
         tab_porincipal->setTabText(tab_porincipal->indexOf(tab_6), QApplication::translate("MainWindow", "Buscar", 0));
         lb_buscar_ciudad->setText(QApplication::translate("MainWindow", "ID Ciudad", 0));
-        bt_buscar_ciudad->setText(QApplication::translate("MainWindow", "Eliminar", 0));
+        Eliminar_ciudad->setText(QApplication::translate("MainWindow", "Eliminar", 0));
         tab_eliminar_2->setTabText(tab_eliminar_2->indexOf(tab_16), QApplication::translate("MainWindow", "Ciudad", 0));
         bt_buscar_cliente->setText(QApplication::translate("MainWindow", "Eliminar", 0));
         lb_busca_cliente->setText(QApplication::translate("MainWindow", "Id Cliente", 0));

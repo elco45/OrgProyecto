@@ -46,6 +46,32 @@ private slots:
 
     void on_combo_listar_activated(const QString &arg1);
 
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_Crear_liente_clicked();
+
+    void on_crear_lineas_clicked();
+
+    void on_Crearllamadas_clicked();
+
+    void on_bt_buscar_cliente_2_clicked();
+
+    void on_bt_buscar_cliente_sin_clicked();
+
+    void on_Eliminar_ciudad_clicked();
+
+    void on_bt_buscar_cliente_clicked();
+
+    void on_bt_buscar_linea_clicked();
+
+    void on_bt_agregar_linea_clicked();
+
+    void on_bt_agregar_cliente_clicked();
+
+    void on_idciudad_crear_cliente_cursorPositionChanged(int arg1, int arg2);
+
 private:
     Ui::MainWindow *ui;
 };
