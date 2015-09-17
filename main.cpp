@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include <fstream>
+#include "btree.h"
 using namespace std;
 
 struct Index{
@@ -70,7 +71,30 @@ int tamHeader= sizeof(int)+ sizeof(int)+ sizeof(bool);
 vector<Index> l_indexCiudad;
 vector<Index> l_indexCliente;
 vector<Index> l_indexLinea;
+
 int main(int argc, char const *argv[]){
+	BTree tree(4);
+	tree.insertar(41);
+	tree.insertar(67);
+	tree.insertar(34);
+	tree.insertar(69);
+	/*tree.insertar(24);
+	tree.insertar(78);
+	tree.insertar(58);
+	tree.insertar(62);
+	tree.insertar(64);
+	tree.insertar(45);
+	tree.insertar(81);
+	tree.insertar(27);
+	tree.insertar(61);
+	tree.insertar(65);
+	tree.insertar(70);*/
+	tree.recorrerInorden();
+	cout<<endl;
+	tree.meow();
+	return 0;
+}
+/*int main(int argc, char const *argv[]){
 	int subresp;
 	while(true){
 		int resp=menu();
@@ -213,7 +237,7 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	return 0;
-}
+}*/
 
 int menu(){
 	int resp=0;
