@@ -29,6 +29,8 @@ void L_LlamadaBin();
 
 //herramientas de busqueda
 int PosNuevoBinarySearch(vector<Index>, unsigned long);
+int PosBNuevoBinarySearch(vector<Index>, unsigned long);
+int PosENuevoBinarySearch(vector<Index>, unsigned long);
 int PosBinarySearch(vector<Index>, unsigned long);
 bool binarySearch(vector<Index>, unsigned long, int,int);
 
@@ -72,7 +74,7 @@ vector<Index> l_indexCiudad;
 vector<Index> l_indexCliente;
 vector<Index> l_indexLinea;
 
-int main(int argc, char const *argv[]){
+/*int main(int argc, char const *argv[]){
 	BTree tree(4);
 	tree.insertar(41);
 	tree.insertar(67);
@@ -88,13 +90,14 @@ int main(int argc, char const *argv[]){
 	tree.insertar(27);
 	tree.insertar(61);
 	tree.insertar(65);
-	tree.insertar(70);*/
+	tree.insertar(70);
 	tree.recorrerInorden();
 	cout<<endl;
 	tree.meow();
 	return 0;
-}
-/*int main(int argc, char const *argv[]){
+}*/
+
+int main(int argc, char const *argv[]){
 	int subresp;
 	while(true){
 		int resp=menu();
@@ -237,7 +240,7 @@ int main(int argc, char const *argv[]){
 		}
 	}
 	return 0;
-}*/
+}
 
 int menu(){
 	int resp=0;
@@ -320,11 +323,12 @@ void WClienteBin(){
 		char NombreCliente[40];
 		char Genero[2];
 		char IdCiudad[5];
-		string str1 = "", str2 = "",str3 = "",str4 = "";
+		string str1 = "", str2 = "",str3 = "",str4 = "",nada;
 		getline(inFile, str1, ',');
 		getline(inFile, str2, ',');
 		getline(inFile, str3, ',');
-		getline(inFile, str4, '\n');
+		getline(inFile, str4, ',');
+		getline(inFile, nada, '\n');
 		for (int i = 0; i < sizeof(IdCliente); ++i){
 			IdCliente[i] = str1[i];
 		}
@@ -584,6 +588,72 @@ int PosNuevoBinarySearch(vector<Index> v,unsigned long key){
     }
     return -1;
 }
+/*int PosBNuevoBinarySearch(vector<Index> v,unsigned long key){
+	int izquierda = 0;
+    int derecha = v.size() - 1;
+    int medio;
+    while(izquierda<=high){
+    	medio=(izquierda+derecha)/2;
+    	if (key==v.at(medio).llave){
+    		return medio;
+    	}else{
+    		if (key<v.at(medio).llave){
+    			if (medio!=0){
+    				if (key>v.at(medio-1).llave){
+    					return medio;
+    				}else{
+    					derecha = medio-1;
+    				}
+    			}else{
+    				return medio;
+    			}
+    		}else{
+    			if (medio!= v.size()-1){
+    				if (key<v.at(medio+1)){
+    					return medio+1;
+    				}else{
+    					izquierda=medio+1;
+    				}
+    			}else{
+    				return -1;
+    			}
+    		}
+    	}
+    }
+}
+int PosENuevoBinarySearch(vector<Index> v,unsigned long key){
+	int izquierda = 0;
+    int derecha = v.size() - 1;
+    int medio;
+    while(izquierda<=high){
+    	medio=(izquierda+derecha)/2;
+    	if (key==v.at(medio).llave){
+    		return medio;
+    	}else{
+    		if (key<v.at(medio).llave){
+    			if (medio!=0){
+    				if (key>v.at(medio-1).llave){
+    					return -1;
+    				}else{
+    					derecha = medio-1;
+    				}
+    			}else{
+    				return -1;
+    			}
+    		}else{
+    			if (medio!= v.size()-1){
+    				if (key<v.at(medio+1)){
+    					return -1;
+    				}else{
+    					izquierda=medio+1;
+    				}
+    			}else{
+    				return -1;
+    			}
+    		}
+    	}
+    }
+}*/
 int PosBinarySearch(vector<Index> v,unsigned long key){
 	int tama = v.size();
 	int inferior,superior,medio;
@@ -785,7 +855,7 @@ void E_Ciudad(){
 		outFile.write((char*)&rrn, sizeof(int));
 		outFile.seekp( sizeof(int)+ sizeof(int));
 		outFile.write((char*)&flag, sizeof(flag));
-		l_indexCiudad.erase(l_indexCiudad.begin()+rrn);
+		l_indexCiudad.erase(l_indexCiudad.begin()+pos);
 		outFile.close();
 	}else{
 		cout<<"Llave invalido!"<<endl;
@@ -821,7 +891,7 @@ void E_Cliente(){
 		outFile.write((char*)&rrn, sizeof(int));
 		outFile.seekp( sizeof(int)+ sizeof(int));
 		outFile.write((char*)&flag, sizeof(flag));
-		l_indexCliente.erase(l_indexCliente.begin()+rrn);
+		l_indexCliente.erase(l_indexCliente.begin()+pos);
 		outFile.close();
 	}else{
 		cout<<"Llave invalido!"<<endl;
@@ -855,7 +925,7 @@ void E_Linea(){
 		outFile.write((char*)&rrn, sizeof(int));
 		outFile.seekp( sizeof(int)+ sizeof(int));
 		outFile.write((char*)&flag, sizeof(flag));
-		l_indexLinea.erase(l_indexLinea.begin()+rrn);
+		l_indexLinea.erase(l_indexLinea.begin()+pos);
 		outFile.close();
 	}else{
 		cout<<"Llave invalido!"<<endl;
