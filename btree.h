@@ -8,8 +8,9 @@ class BTree{
     int Orden;
 public:
     BTree(int);
-    void recorrerInorden(); 
-    Nodo* buscar(int);
+    int buscar(int); 
+    void Inorder();
+    void eliminar(int);
     void insertar(int);
     Nodo* getRoot();
     void meow();

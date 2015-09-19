@@ -9,9 +9,14 @@ Nodo* BTree::getRoot(){
     return root;
 }
 
-void BTree::recorrerInorden(){
+int BTree::buscar(int abuscar){
 	if(root != NULL){
-		root->recorrerInorden();
+		return root->buscar(abuscar);
+	}
+}
+void BTree::Inorder(){
+	if(root != NULL){
+		return root->Inorder();
 	}
 }
 
@@ -19,9 +24,9 @@ void BTree::insertar(int k){
     if (root == NULL){
         root = new Nodo(Orden, true);
         root->llaves[0] = k;
-        root->nKeys = 1;
+        root->cant_Key = 1;
     }else{
-        if (root->nKeys == 2*Orden-1){
+        if (root->cant_Key == 2*Orden-1){
             Nodo* s = new Nodo(Orden, false);
             s->hijos[0] = root;
             s->split(0, root);
@@ -36,6 +41,24 @@ void BTree::insertar(int k){
             root->insertar(k);
         }
     }
+}
+
+void BTree::eliminar(int k){
+	if (!root){
+		cout << "El árbol está vacío\n";
+		return;
+	}
+	root->eliminar(k);
+	if (root->cant_Key==0){
+		Nodo *tmp = root;
+		if (root->esHoja){
+			root = NULL;
+		}else{
+			root = root->hijos[0];
+		}
+		delete tmp;
+	}
+	return;
 }
 
 void BTree::meow(){
