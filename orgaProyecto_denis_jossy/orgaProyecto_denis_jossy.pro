@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-09-12T00:08:33
+# Project created by QtCreator 2015-09-18T18:33:39
 #
 #-------------------------------------------------
 
@@ -8,13 +8,13 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = proyecto_orga
+TARGET = orgaProyecto_denis_jossy
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        menu.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += menu.h
 
-FORMS    += mainwindow.ui
+FORMS    += menu.ui
