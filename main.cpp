@@ -99,11 +99,21 @@ int main(int argc, char const *argv[]){
 		cont--;
 		cont2++;
 	}
-	cont=0;
+	cont=19;
 	tree.Inorder();
 	cout<<endl;
 	Index* id=new Index(cont,5);
 	int tmp =tree.buscar(id);
+	cout<<"Pos "<<tmp<<endl;
+	cout<<endl;
+	cont=1;
+	Index* id2=new Index(cont,5);
+	tree.eliminar(id2);
+	cont=2;
+	Index* id3=new Index(cont,5);
+	tree.eliminar(id3);
+	tree.Inorder();
+	tmp =tree.buscar(id);
 	cout<<"Pos "<<tmp<<endl;
 	cout<<endl;
 	return 0;

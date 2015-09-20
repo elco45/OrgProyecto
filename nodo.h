@@ -20,18 +20,17 @@ public:
     void insertar(Index*);
     void split(int, Nodo*);
     ~Nodo();
-    void meow();
-/*
-    int encontrarKey(int k);
-    void eliminar(int);
+
+    int encontrarKey(Index*);
+    void eliminar(Index*);
     void removeFromLeaf(int);
     void removeFromNonLeaf(int);
-    int getPred(int);
-    int getSucc(int);
+    Index* getPred(int);
+    Index* getSucc(int);
     void fill(int);
     void borrowFromPrev(int);
     void borrowFromNext(int);
-    void merge(int);*/
+    void merge(int);
 };
 
 

@@ -84,12 +84,6 @@ void Nodo::insertar(Index* k){
     }
 }
 
-void Nodo::meow(){
-	for (int i = 0; i < Orden; ++i){
-		cout<<llaves[i]->getLlave()<<endl;
-	}
-}
-
 void Nodo::split(int i, Nodo *y){
     Nodo *z = new Nodo(y->Orden, y->esHoja);
     z->cant_Key = Orden - 1;
@@ -113,17 +107,17 @@ void Nodo::split(int i, Nodo *y){
     llaves[i] = y->llaves[Orden-1];
     cant_Key = cant_Key + 1;
 }
-/*
-int Nodo::encontrarKey(int k){
+
+int Nodo::encontrarKey(Index* k){
 	int idx=0;
-	while (idx<cant_Key && llaves[idx] < k){
+	while (idx<cant_Key && llaves[idx]->getLlave() < k->getLlave()){
 		++idx;
 	}
 	return idx;
 }
-void Nodo::eliminar(int k){
+void Nodo::eliminar(Index* k){
 	int idx = encontrarKey(k);
-	if (idx < cant_Key && llaves[idx] == k){
+	if (idx < cant_Key && llaves[idx]->getLlave() == k->getLlave()){
 		if (esHoja){
 			removeFromLeaf(idx);
 		}else{
@@ -154,13 +148,13 @@ void Nodo::removeFromLeaf (int idx){
 	return;
 }
 void Nodo::removeFromNonLeaf(int idx){
-	int k = llaves[idx];
+	Index* k = llaves[idx];
 	if (hijos[idx]->cant_Key >= Orden){
-		int pred = getPred(idx);
+		Index*pred = getPred(idx);
 		llaves[idx] = pred;
 		hijos[idx]->eliminar(pred);
 	}else if(hijos[idx+1]->cant_Key >= Orden){
-		int succ = getSucc(idx);
+		Index* succ = getSucc(idx);
 		llaves[idx] = succ;
 		hijos[idx+1]->eliminar(succ);
 	}
@@ -170,14 +164,14 @@ void Nodo::removeFromNonLeaf(int idx){
 	}
 	return;
 }
-int Nodo::getPred(int idx){
+Index* Nodo::getPred(int idx){
 	Nodo *cur=hijos[idx];
 	while (!cur->esHoja){
 		cur = cur->hijos[cur->cant_Key];
 	}
 	return cur->llaves[cur->cant_Key-1];
 }
-int Nodo::getSucc(int idx){
+Index* Nodo::getSucc(int idx){
 	Nodo *cur = hijos[idx+1];
 	while (!cur->esHoja){
 		cur = cur->hijos[0];
@@ -264,4 +258,3 @@ void Nodo::merge(int idx){
 	delete(sibling);
 	return;
 }
-*/

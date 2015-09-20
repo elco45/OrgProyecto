@@ -11,10 +11,9 @@ public:
     BTree(int);
     int buscar(Index*); 
     void Inorder();
-    void eliminar(int);
+    void eliminar(Index*);
     void insertar(Index*);
     Nodo* getRoot();
-    void meow();
 };
 
 #endif

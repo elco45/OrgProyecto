@@ -42,8 +42,8 @@ void BTree::insertar(Index* k){
         }
     }
 }
-/*
-void BTree::eliminar(int k){
+
+void BTree::eliminar(Index* k){
 	if (!root){
 		cout << "El árbol está vacío\n";
 		return;
@@ -60,7 +60,3 @@ void BTree::eliminar(int k){
 	}
 	return;
 }
-
-void BTree::meow(){
-	root->meow();
-}*/
