@@ -8,6 +8,7 @@ class Index{
 	int rrn;
 public:
 	Index();
+	Index(long);
     Index(long,int);
     ~Index();
     long getLlave();

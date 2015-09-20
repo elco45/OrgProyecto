@@ -3,6 +3,9 @@
 Index::Index(){
 
 }
+Index::Index(long Llave){
+	llave=Llave;
+}
 Index::Index(long Llave, int Rrn){
 	llave=Llave;
 	rrn=Rrn;

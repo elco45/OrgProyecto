@@ -50,7 +50,7 @@ void Nodo::Inorder(){
         if (!esHoja){
             hijos[i]->Inorder();
         }
-        cout<<"-"<<llaves[i]->getLlave();
+        cout<<llaves[i]->getLlave()<<"-"<<llaves[i]->getRrn()<<endl;
     }
     if (!esHoja){
         hijos[i]->Inorder();
