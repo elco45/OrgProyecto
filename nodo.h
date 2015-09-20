@@ -1,7 +1,8 @@
 #ifndef NODO_H
 #define NODO_H
+#include "index.h"
 #include <iostream>
-//#include "IndexClass.h"
+#include <vector>
 using namespace std;
 
 class Nodo{
@@ -9,19 +10,18 @@ public:
     int Orden;
     bool esHoja;
     int cant_Key;
-    int* llaves;
-    int rrn;
+    Index** llaves;
     //metodos
     Nodo** hijos;
 	Nodo(int, bool);//orden, es hoja
     Nodo();
-    int buscar(int);
+    int buscar(Index*);
     void Inorder();
-    void insertar(int);
+    void insertar(Index*);
     void split(int, Nodo*);
     ~Nodo();
     void meow();
-
+/*
     int encontrarKey(int k);
     void eliminar(int);
     void removeFromLeaf(int);
@@ -31,7 +31,7 @@ public:
     void fill(int);
     void borrowFromPrev(int);
     void borrowFromNext(int);
-    void merge(int);
+    void merge(int);*/
 };
 
 

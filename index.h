@@ -4,11 +4,13 @@
 using namespace std;
 
 class Index{
-    unsigned long llave;
+    long llave;
 	int rrn;
 public:
-    Index(unsigned long,int);
-    unsigned long getLlave();
+	Index();
+    Index(long,int);
+    ~Index();
+    long getLlave();
     int getRrn();
 };
 

@@ -1,4 +1,5 @@
 #include "nodo.h"
+#include "index.h"
 
 Nodo::Nodo(){
 }
@@ -7,7 +8,7 @@ Nodo::Nodo(int orden, bool eshoja){
 	Orden = orden;
 	esHoja = eshoja;
 	cant_Key = 0;
-	llaves = new int[Orden-1];
+	llaves=new Index*[Orden-1];
     hijos = new Nodo*[Orden];
 }
 
@@ -30,13 +31,13 @@ Nodo::~Nodo(){
         hijos[i]->buscar(abuscar);
     }
 }*/
-int Nodo::buscar(int ll){
+int Nodo::buscar(Index* ll){
 	int i = 0;
-	while(i<cant_Key && ll>llaves[i]){
+	while(i<cant_Key && ll->getLlave()>llaves[i]->getLlave()){
 		i++;
 	}
-	if(ll == llaves[i]){
-		return llaves[i];
+	if(ll->getLlave() == llaves[i]->getLlave()){
+		return llaves[i]->getRrn();
 	}
 	if(esHoja){
 		return -1;
@@ -49,7 +50,7 @@ void Nodo::Inorder(){
         if (!esHoja){
             hijos[i]->Inorder();
         }
-        cout<<"-"<<llaves[i];
+        cout<<"-"<<llaves[i]->getLlave();
     }
     if (!esHoja){
         hijos[i]->Inorder();
@@ -57,11 +58,11 @@ void Nodo::Inorder(){
 }
 
 
-void Nodo::insertar(int k){
+void Nodo::insertar(Index* k){
     int i = cant_Key-1;
     if (esHoja){
         for (i = cant_Key-1; i >=0; i--){
-        	if (llaves[i]>k){
+        	if (llaves[i]->getLlave()>k->getLlave()){
         		llaves[i+1] = llaves[i];
         	}else{
         		break;
@@ -70,12 +71,12 @@ void Nodo::insertar(int k){
         llaves[i+1] = k;
         cant_Key = cant_Key+1;
     }else{
-        while (i >= 0 && llaves[i] > k){
+        while (i >= 0 && llaves[i]->getLlave() > k->getLlave()){
             i--;
         }
         if (hijos[i+1]->cant_Key == 2*Orden-1){
             split(i+1, hijos[i+1]);
-            if (llaves[i+1] < k){
+            if (llaves[i+1]->getLlave() < k->getLlave()){
                 i++;
             }
         }
@@ -85,7 +86,7 @@ void Nodo::insertar(int k){
 
 void Nodo::meow(){
 	for (int i = 0; i < Orden; ++i){
-		cout<<llaves[i]<<endl;
+		cout<<llaves[i]->getLlave()<<endl;
 	}
 }
 
@@ -112,7 +113,7 @@ void Nodo::split(int i, Nodo *y){
     llaves[i] = y->llaves[Orden-1];
     cant_Key = cant_Key + 1;
 }
-
+/*
 int Nodo::encontrarKey(int k){
 	int idx=0;
 	while (idx<cant_Key && llaves[idx] < k){
@@ -263,3 +264,4 @@ void Nodo::merge(int idx){
 	delete(sibling);
 	return;
 }
+*/

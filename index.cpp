@@ -1,11 +1,17 @@
 #include "index.h"
 
-Index::Index(unsigned long Llave, int Rrn){
+Index::Index(){
+
+}
+Index::Index(long Llave, int Rrn){
 	llave=Llave;
 	rrn=Rrn;
 }
+Index::~Index(){
+	
+}
 
-unsigned long Index::getLlave(){
+long Index::getLlave(){
 	return llave;
 }
 int Index::getRrn(){
