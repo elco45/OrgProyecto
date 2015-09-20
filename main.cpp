@@ -70,6 +70,8 @@ void RIL_Ciudad();
 void RIL_Cliente();
 void RI_Linea();
 
+void imprimirIndice(vector<Index*>);
+
 int tamHeader= sizeof(int)+ sizeof(int)+ sizeof(bool);
 vector<Index*> l_indexCiudad;
 vector<Index*> l_indexCliente;
@@ -125,19 +127,52 @@ int main(int argc, char const *argv[]){
 				<<"4. Llamadas"<<endl;
 			cin>>subresp;
 			if (subresp==1){
-				L_CiudadBin();
+				cout<<"1. Listar directo\n"
+					<<"2. Listar indice\n"
+					<<"3. Listar arbol B"<<endl;
+				cin>>subresp;
+				if (subresp==1){
+					L_CiudadBin();
+				}else if(subresp==2){
+					imprimirIndice(l_indexCiudad);
+				}else if(subresp==3){
+					btree_ciudad.Inorder();
+				}else{
+					cout<<"Valor invalido!"<<endl;
+				}
 			}else if(subresp==2){
-				L_ClienteBin();
+				cout<<"1. Listar directo\n"
+					<<"2. Listar indice\n"
+					<<"3. Listar arbol B"<<endl;
+				cin>>subresp;
+				if (subresp==1){
+					L_ClienteBin();
+				}else if(subresp==2){
+					imprimirIndice(l_indexCliente);
+				}else if(subresp==3){
+					btree_cliente.Inorder();
+				}else{
+					cout<<"Valor invalido!"<<endl;
+				}
 			}else if(subresp==3){
-				L_LineaBin();
+				cout<<"1. Listar directo\n"
+					<<"2. Listar indice\n"
+					<<"3. Listar arbol B"<<endl;
+				cin>>subresp;
+				if (subresp==1){
+					L_LineaBin();
+				}else if(subresp==2){
+					imprimirIndice(l_indexLinea);
+				}else if(subresp==3){
+					btree_linea.Inorder();
+				}else{
+					cout<<"Valor invalido!"<<endl;
+				}
 			}else if(subresp==4){
 				L_LlamadaBin();
 			}else{
-				//btree_ciudad.Inorder();
-				btree_cliente.Inorder();
-				//btree_linea.Inorder();
 				cout<<"Valor invalido!"<<endl;
-			}
+			}	
 		}else if(resp==3){//Agregar
 			cout<<"Agregar\n"
 				<<"1. Ciudades\n"
@@ -190,23 +225,29 @@ int main(int argc, char const *argv[]){
 				}
 			}else if(subresp==2){
 				cout<<"1. Buscar con indice\n"
-					<<"2. Buscar sin indice"<<endl;
+					<<"2. Buscar sin indice\n"
+					<<"3. Buscar con Arbol B"<<endl;
 				cin>>subresp;
 				if (subresp==1){
 					BI_Cliente();
 				}else if(subresp==2){
 					B_Cliente();
+				}else if(subresp==3){
+
 				}else{
 					cout<<"Valor invalido!"<<endl;
 				}
 			}else if(subresp==3){
 				cout<<"1. Buscar con indice\n"
-					<<"2. Buscar sin indice"<<endl;
+					<<"2. Buscar sin indice\n"
+					<<"3. Buscar con Arbol B"<<endl;
 				cin>>subresp;
 				if (subresp==1){
 					BI_Linea();
 				}else if(subresp==2){
 					B_Linea();
+				}else if(subresp==3){
+
 				}else{
 					cout<<"Valor invalido!"<<endl;
 				}
@@ -277,6 +318,11 @@ int menu(){
 		}else{
 			cout<<"Ingrese un valor valido!"<<endl;
 		}
+	}
+}
+void imprimirIndice(vector<Index*> temp){
+	for (int i = 0; i < temp.size(); i++){
+		cout<<temp.at(i)->getLlave()<<"-"<<temp.at(i)->getRrn()<<endl;
 	}
 }
 
@@ -1110,7 +1156,7 @@ void A_Linea(){
 			outFile.seekp(tamHeader+ cantRegistros*( sizeof(IdCliente)+ sizeof(Numero)));
 			outFile.write((char*)&IdCliente, sizeof(IdCliente));
 			outFile.write((char*)&Numero, sizeof(Numero));
-			long llave=atol(IdCliente);
+			long llave=atol(Numero);
 			Index* ind = new Index(llave,cantRegistros);
 			Index* ind2 = new Index(llave,cantRegistros);
 			btree_linea.insertar(ind2);
@@ -1128,7 +1174,7 @@ void A_Linea(){
 			outFile.write((char*)&rrn, sizeof(rrn));
 			outFile.seekp( sizeof(int)+ sizeof(int));
 			outFile.write((char*)&flag, sizeof(flag));
-			long llave=atol(IdCliente);
+			long llave=atol(Numero);
 			Index* ind = new Index(llave,avail);
 			Index* ind2 = new Index(llave,avail);
 			btree_linea.insertar(ind2);
