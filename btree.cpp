@@ -1,7 +1,9 @@
 #include "btree.h"
 
+
 BTree::BTree(int d){
 	raiz = NULL;
+	order=2*d;
 	Orden = d;
 }
 int BTree::buscar(long abuscar){
@@ -20,7 +22,7 @@ void BTree::insertar(Index* key){
         raiz->llaves[0] = key;
         raiz->cant_Key = 1;
     }else{
-        if (2*Orden-1 == raiz->cant_Key){
+        if (order-1 == raiz->cant_Key){
             Nodo* son = new Nodo(Orden, false);
             son->hijos[0] = raiz;
             son->split(raiz,0);

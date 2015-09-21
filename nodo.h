@@ -10,6 +10,7 @@ public:
     int Orden;
     bool esHoja;
     int cant_Key;
+    int order;
     Index** llaves;
     Nodo** hijos;
     //metodos

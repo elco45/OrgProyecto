@@ -7,6 +7,7 @@
 class BTree{
     Nodo *raiz;
     int Orden;
+    int order;
 public:
     BTree(int);
     int buscar(long); 

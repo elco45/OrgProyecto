@@ -1,5 +1,6 @@
 #include "nodo.h"
 #include "index.h"
+int order;
 
 Nodo::Nodo(){
 }
@@ -7,6 +8,7 @@ Nodo::Nodo(int orden, bool eshoja){
 	Orden = orden;
 	esHoja = eshoja;
 	cant_Key = 0;
+	order =2*orden;
 	llaves=new Index*[Orden-1];
     hijos = new Nodo*[Orden];
 }
@@ -60,7 +62,7 @@ void Nodo::insertar(Index* key){
         while (i >= 0 && llaves[i]->getLlave() > key->getLlave()){
             i--;
         }
-        if (2*Orden-1 == hijos[i+1]->cant_Key){
+        if (order-1 == hijos[i+1]->cant_Key){
             split(hijos[i+1],i+1);
             if (llaves[i+1]->getLlave() < key->getLlave()){
                 i++;

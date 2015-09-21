@@ -9,11 +9,6 @@
 #include "index.h"
 using namespace std;
 
-/*struct Index{
-	long llave;
-	int rrn;
-};*/
-
 int menu();
 
 //Escribir txt a bin
