@@ -69,11 +69,6 @@ void RI_Ciudad();
 void RI_Cliente();
 void RI_Linea();
 
-//Actualizar lista indice
-void RIL_Ciudad();
-void RIL_Cliente();
-void RI_Linea();
-
 void imprimirIndice(vector<Index*>);
 
 //variables globales
@@ -87,6 +82,9 @@ BTree btree_linea(75);
 
 int main(int argc, char const *argv[]){
 	int subresp;
+	RI_Ciudad();
+	RI_Cliente();
+	RI_Linea();
 	while(true){
 		int resp=menu();
 		if (resp==1){//Crear
@@ -306,6 +304,10 @@ void imprimirIndice(vector<Index*> temp){
 
 //Crear
 void WCiudadBin(){
+	if (!l_indexCiudad.empty()){
+		l_indexCiudad.clear();
+	}
+	BTree Btmp(10);
 	ifstream inFile("ciudad.txt");
 	ofstream outFile("ciudad.bin");
 	int x;
@@ -332,7 +334,8 @@ void WCiudadBin(){
 		long temKey=atol(IdCiudad);
 		Index* ind = new Index(temKey,rrn);
 		Index* ind2 = new Index(temKey,rrn);
-		btree_ciudad.insertar(ind2);
+		//btree_ciudad.insertar(ind2);
+		Btmp.insertar(ind2);
 		if (rrn!=0){
 			int pos=PosBNuevoBinarySearch(l_indexCiudad, ind->getLlave());
 			if (pos==-1){
@@ -346,12 +349,16 @@ void WCiudadBin(){
 		outFile.write((char*)IdCiudad, sizeof(IdCiudad));
 		outFile.write((char*)NombreCiudad, sizeof(NombreCiudad));
 		rrn++;
-		//delete ind;
 	}
 	inFile.close();
 	outFile.close();
+	btree_ciudad=Btmp;
 }
 void WClienteBin(){
+	if (!l_indexCliente.empty()){
+		l_indexCliente.clear();
+	}
+	BTree Btmp(50);
 	ifstream inFile("cliente.txt");
 	ofstream outFile("cliente.bin");
 	int avail=-1;
@@ -386,7 +393,9 @@ void WClienteBin(){
 		}
 		long temKey=atol(IdCliente);
 		Index* ind = new Index(temKey,rrn);
-		btree_cliente.insertar(ind);
+		Index* ind2 = new Index(temKey,rrn);
+		//btree_cliente.insertar(ind2);
+		Btmp.insertar(ind2);
 		if (rrn!=0){
 			int pos=PosBNuevoBinarySearch(l_indexCliente, ind->getLlave());
 			if (pos==-1){
@@ -404,9 +413,14 @@ void WClienteBin(){
 		outFile.write((char*)IdCiudad, sizeof(IdCiudad));
 	}
 	inFile.close();
-	outFile.close();	
+	outFile.close();
+	btree_cliente=Btmp;	
 }
 void WLineaBin(){
+	if (!l_indexLinea.empty()){
+		l_indexLinea.clear();
+	}
+	BTree Btmp(75);
 	ifstream inFile("linea.txt");
 	ofstream outFile("linea.bin");
 	int avail=-1;
@@ -432,7 +446,8 @@ void WLineaBin(){
 		long temKey=atol(Numero);
 		Index* ind = new Index(temKey,rrn);
 		Index* ind2 = new Index(temKey,rrn);
-		btree_linea.insertar(ind2);
+		//btree_linea.insertar(ind2);
+		Btmp.insertar(ind2);
 		if (rrn!=0){
 			int pos=PosBNuevoBinarySearch(l_indexLinea, ind->getLlave());
 			if (pos==-1){
@@ -449,6 +464,7 @@ void WLineaBin(){
 	}
 	inFile.close();
 	outFile.close();	
+	btree_linea=Btmp;
 }
 void WLlamadaBin(){
 	ifstream inFile("llamada.txt");
@@ -1431,110 +1447,150 @@ void M_Linea(){
 
 //Reindexar
 void RI_Ciudad(){
+	if (!l_indexCiudad.empty()){
+		l_indexCiudad.clear();
+	}
+	ifstream inFile("ciudad.bin",ios::binary);
+	inFile.seekg(0);
+	int avail;
+	int cantRegistros;
+	bool flag;
+	inFile.read((char*)&avail, sizeof(int));
+	inFile.read((char*)&cantRegistros, sizeof(int));
+	inFile.read((char*)&flag, sizeof(bool));
+	int cont=0;
+	while(cont<cantRegistros){
+		char IdCiudad[5];
+		char NombreCiudad[40];
+		inFile.read((char*)IdCiudad, sizeof(IdCiudad));
+		inFile.read((char*)NombreCiudad, sizeof(NombreCiudad));
+		if (IdCiudad[0]!='*'){
+			Index* ind=new Index(atol(IdCiudad), cont);
+			Index* ind2=new Index(atol(IdCiudad), cont);
+			int pos=PosBNuevoBinarySearch(l_indexCiudad,atol(IdCiudad));
+			if (pos==-1){
+				l_indexCiudad.push_back(ind);
+			}else{
+				l_indexCiudad.insert(l_indexCiudad.begin()+pos, ind);
+			}
+			btree_ciudad.insertar(ind2);
+		}
+		cont++;
+	}
+	inFile.close();
 	ofstream indexFile("I_ciudad.bin");
 	long key;
 	int rrn;
 	for (int i = 0; i < l_indexCiudad.size(); i++){
 		key=l_indexCiudad.at(i)->getLlave();
 		rrn=l_indexCiudad.at(i)->getRrn();
-		indexFile.write((char*)&key, sizeof(l_indexCiudad.at(i)->getLlave()));
-		indexFile.write((char*)&rrn, sizeof(l_indexCiudad.at(i)->getRrn()));
+		indexFile.write((char*)&key, sizeof(key));
+		indexFile.write((char*)&rrn, sizeof(rrn));
 	}
 	indexFile.close();
-	bool flag=0;
+	flag=0;
 	ofstream outFile("ciudad.bin",ios::in|ios::out);
 	outFile.seekp( sizeof(int)+ sizeof(int));
 	outFile.write((char*)&flag, sizeof(flag));
 	outFile.close();
 }
 void RI_Cliente(){
+	if (!l_indexCliente.empty()){
+		l_indexCliente.clear();
+	}
+	ifstream inFile("cliente.bin",ios::binary);
+	inFile.seekg(0);
+	int avail;
+	int cantRegistros;
+	bool flag;
+	inFile.read((char*)&avail, sizeof(int));
+	inFile.read((char*)&cantRegistros, sizeof(int));
+	inFile.read((char*)&flag, sizeof(bool));
+	int cont=0;
+	while(cont<cantRegistros){
+		char IdCliente[15];
+		char NombreCliente[40];
+		char Genero[2];
+		char IdCiudad[5];
+		inFile.read((char*)IdCliente, sizeof(IdCliente));
+		inFile.read((char*)NombreCliente, sizeof(NombreCliente));
+		inFile.read((char*)Genero, sizeof(Genero));
+		inFile.read((char*)IdCiudad, sizeof(IdCiudad));
+		if (IdCliente[0]!='*'){
+			Index* ind=new Index(atol(IdCliente), cont);
+			Index* ind2=new Index(atol(IdCliente), cont);
+			int pos=PosBNuevoBinarySearch(l_indexCliente, atol(IdCliente));
+			if (pos==-1){
+				l_indexCliente.push_back(ind);
+			}else{
+				l_indexCliente.insert(l_indexCliente.begin()+pos, ind);
+			}
+			btree_cliente.insertar(ind2);			
+		}
+		cont++;
+	}
+	inFile.close();
 	ofstream indexFile("I_cliente.bin");
 	long key;
 	int rrn;
 	for (int i = 0; i < l_indexCliente.size(); i++){
 		key=l_indexCliente.at(i)->getLlave();
 		rrn=l_indexCliente.at(i)->getRrn();
-		indexFile.write((char*)&key, sizeof(l_indexCliente.at(i)->getLlave()));
-		indexFile.write((char*)&rrn, sizeof(l_indexCliente.at(i)->getRrn()));
+		indexFile.write((char*)&key, sizeof(key));
+		indexFile.write((char*)&rrn, sizeof(rrn));
 	}
 	indexFile.close();
-	bool flag=0;
+	flag=0;
 	ofstream outFile("cliente.bin",ios::in|ios::out);
 	outFile.seekp( sizeof(int)+ sizeof(int));
 	outFile.write((char*)&flag, sizeof(flag));
 	outFile.close();
 }
 void RI_Linea(){
+	if (!l_indexLinea.empty()){
+		l_indexLinea.clear();
+	}
+	ifstream inFile("linea.bin",ios::binary);
+	inFile.seekg(0);
+	int avail;
+	int cantRegistros;
+	bool flag;
+	inFile.read((char*)&avail, sizeof(int));
+	inFile.read((char*)&cantRegistros, sizeof(int));
+	inFile.read((char*)&flag, sizeof(bool));
+	int cont=0;
+	while(cont<cantRegistros){
+		char Numero[9];
+		char IdCliente[14];
+		inFile.read((char*)IdCliente, sizeof(IdCliente));
+		inFile.read((char*)Numero, sizeof(Numero));
+		if (IdCliente[0]!='*'){
+			Index* ind=new Index(atol(Numero), cont);
+			Index* ind2=new Index(atol(Numero), cont);
+			int pos=PosBNuevoBinarySearch(l_indexLinea, atol(Numero));
+			if (pos==-1){
+				l_indexLinea.push_back(ind);
+			}else{
+				l_indexLinea.insert(l_indexLinea.begin()+pos, ind);
+			}
+			btree_linea.insertar(ind2);
+		}
+		cont++;
+	}
+	inFile.close();
 	ofstream indexFile("I_Linea.bin");
 	long key;
 	int rrn;
 	for (int i = 0; i < l_indexLinea.size(); i++){
 		key=l_indexLinea.at(i)->getLlave();
 		rrn=l_indexLinea.at(i)->getRrn();
-		indexFile.write((char*)&key, sizeof(l_indexLinea.at(i)->getLlave()));
-		indexFile.write((char*)&rrn, sizeof(l_indexLinea.at(i)->getRrn()));
+		indexFile.write((char*)&key, sizeof(key));
+		indexFile.write((char*)&rrn, sizeof(rrn));
 	}
 	indexFile.close();
-	bool flag=0;
+	flag=0;
 	ofstream outFile("linea.bin",ios::in|ios::out);
 	outFile.seekp( sizeof(int)+ sizeof(int));
 	outFile.write((char*)&flag, sizeof(flag));
 	outFile.close();
 }
-
-//Actualizar lista indice
-void RIL_Ciudad(){
-	ifstream indexFile("I_ciudad.bin");
-	long llave;
-	int rrn;
-	while(!indexFile.eof()){
-		indexFile.read((char*)&llave, sizeof(llave));
-		indexFile.read((char*)&rrn, sizeof(rrn));
-		Index* ind = new Index(llave,rrn);
-		if (ind->getLlave()!=0){
-			l_indexCiudad.push_back(ind);
-		}
-	}
-	indexFile.close();
-}
-void RIL_Cliente(){
-	ifstream indexFile("I_cliente.bin");
-	long llave;
-	int rrn;
-	while(!indexFile.eof()){
-		indexFile.read((char*)&llave, sizeof(llave));
-		indexFile.read((char*)&rrn, sizeof(rrn));
-		Index* ind = new Index(llave,rrn);
-		if (ind->getLlave()!=0){
-			l_indexCliente.push_back(ind);
-		}
-	}
-	indexFile.close();
-}
-void RIL_Linea(){
-	ifstream indexFile("I_linea.bin");
-	long llave;
-	int rrn;
-	while(!indexFile.eof()){
-		indexFile.read((char*)&llave, sizeof(llave));
-		indexFile.read((char*)&rrn, sizeof(rrn));
-		Index* ind = new Index(llave,rrn);
-		if (ind->getLlave()!=0){
-			l_indexLinea.push_back(ind);
-		}
-	}
-	indexFile.close();
-}
-
-/*void sort(vector<Index*> v){
-	Index* ind;
-	for (int i = 0; i<= v.size()-1; i++){
-		for (int j = 0; j < v.size()-1; j++){
-			if (v.at(j).getLlave()>v.at(j+1).llave){
-				ind=v.at(j);
-				v.erase(v.begin()+j);
-				v.insert(v.begin()+j+1,ind);
-			}
-		}
-	}
-}*/
