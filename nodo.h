@@ -11,26 +11,25 @@ public:
     bool esHoja;
     int cant_Key;
     Index** llaves;
-    //metodos
     Nodo** hijos;
-	Nodo(int, bool);//orden, es hoja
+    //metodos
     Nodo();
-    int buscar(Index*);
+	Nodo(int, bool);
+    int buscar(long);
     void Inorder();
     void insertar(Index*);
-    void split(int, Nodo*);
+    void split(Nodo*, int);
     ~Nodo();
-
-    int encontrarKey(Index*);
     void eliminar(Index*);
-    void removeFromLeaf(int);
-    void removeFromNonLeaf(int);
+    int encontrarKey(Index*);
+    void merge(int);
+    void elimHoja(int);
+    void elimHijo(int);
     Index* getPred(int);
     Index* getSucc(int);
     void fill(int);
-    void borrowFromPrev(int);
-    void borrowFromNext(int);
-    void merge(int);
+    void prestarIz(int);
+    void prestarDer(int);
 };
 
 

@@ -1,60 +1,53 @@
 #include "btree.h"
 
 BTree::BTree(int d){
-	root = NULL;
+	raiz = NULL;
 	Orden = d;
 }
-
-Nodo* BTree::getRoot(){
-    return root;
-}
-
-int BTree::buscar(Index* abuscar){
-	if(root != NULL){
-		return root->buscar(abuscar);
+int BTree::buscar(long abuscar){
+	if(raiz != NULL){
+		return raiz->buscar(abuscar);
 	}
 }
 void BTree::Inorder(){
-	if(root != NULL){
-		return root->Inorder();
+	if(raiz != NULL){
+		return raiz->Inorder();
 	}
 }
-
-void BTree::insertar(Index* k){
-    if (root == NULL){
-        root = new Nodo(Orden, true);
-        root->llaves[0] = k;
-        root->cant_Key = 1;
+void BTree::insertar(Index* key){
+    if (raiz == NULL){
+        raiz = new Nodo(Orden, true);
+        raiz->llaves[0] = key;
+        raiz->cant_Key = 1;
     }else{
-        if (root->cant_Key == 2*Orden-1){
-            Nodo* s = new Nodo(Orden, false);
-            s->hijos[0] = root;
-            s->split(0, root);
+        if (2*Orden-1 == raiz->cant_Key){
+            Nodo* son = new Nodo(Orden, false);
+            son->hijos[0] = raiz;
+            son->split(raiz,0);
 
             int i = 0;
-            if (s->llaves[0]->getLlave() < k->getLlave()){
+            if (key->getLlave() > son->llaves[0]->getLlave()){
                 i++;
             }
-            s->hijos[i]->insertar(k);
-            root = s;
+            son->hijos[i]->insertar(key);
+            raiz = son;
         }else{
-            root->insertar(k);
+            raiz->insertar(key);
         }
     }
 }
-
-void BTree::eliminar(Index* k){
-	if (!root){
-		cout << "El árbol está vacío\n";
+void BTree::eliminar(Index* key){
+	if (!raiz){
+		cout << "El árbol está vacío"<<endl;
 		return;
 	}
-	root->eliminar(k);
-	if (root->cant_Key==0){
-		Nodo *tmp = root;
-		if (root->esHoja){
-			root = NULL;
+	raiz->eliminar(key);
+	if (raiz->cant_Key==0){
+		Nodo* tmp = raiz;
+		if (raiz->esHoja){
+			raiz = NULL;
 		}else{
-			root = root->hijos[0];
+			raiz = raiz->hijos[0];
 		}
 		delete tmp;
 	}

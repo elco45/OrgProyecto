@@ -5,15 +5,14 @@
 #include "index.h"
 
 class BTree{
-    Nodo *root;
+    Nodo *raiz;
     int Orden;
 public:
     BTree(int);
-    int buscar(Index*); 
+    int buscar(long); 
     void Inorder();
     void eliminar(Index*);
     void insertar(Index*);
-    Nodo* getRoot();
 };
 
 #endif

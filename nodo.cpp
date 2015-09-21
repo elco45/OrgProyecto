@@ -3,7 +3,6 @@
 
 Nodo::Nodo(){
 }
-
 Nodo::Nodo(int orden, bool eshoja){
 	Orden = orden;
 	esHoja = eshoja;
@@ -14,35 +13,18 @@ Nodo::Nodo(int orden, bool eshoja){
 
 Nodo::~Nodo(){
 }
-
-/*int Nodo::buscar(int abuscar){
-	int i;
-    for (i=0; i<cant_Key; i++){
-        if (!esHoja){
-            hijos[i]->buscar(abuscar);
-        }
-        if (llaves[i]==abuscar){
-        	//cout<<"---- "<<llaves[i];
-        	return llaves[i];
-        }
-        
-    }
-    if (!esHoja){
-        hijos[i]->buscar(abuscar);
-    }
-}*/
-int Nodo::buscar(Index* ll){
+int Nodo::buscar(long key){
 	int i = 0;
-	while(i<cant_Key && ll->getLlave()>llaves[i]->getLlave()){
+	while(i<cant_Key && key>llaves[i]->getLlave()){
 		i++;
 	}
-	if(ll->getLlave() == llaves[i]->getLlave()){
+	if(key == llaves[i]->getLlave()){
 		return llaves[i]->getRrn();
 	}
 	if(esHoja){
 		return -1;
 	}
-	return hijos[i]->buscar(ll);
+	return hijos[i]->buscar(key);
 }
 void Nodo::Inorder(){
 	int i;
@@ -56,147 +38,168 @@ void Nodo::Inorder(){
         hijos[i]->Inorder();
     }
 }
-
-
-void Nodo::insertar(Index* k){
+void Nodo::insertar(Index* key){
     int i = cant_Key-1;
     if (esHoja){
         for (i = cant_Key-1; i >=0; i--){
-        	if (llaves[i]->getLlave()>k->getLlave()){
+        	if (llaves[i]->getLlave()>key->getLlave()){
         		llaves[i+1] = llaves[i];
         	}else{
         		break;
         	}
         }
-        llaves[i+1] = k;
+        llaves[i+1] = key;
         cant_Key = cant_Key+1;
     }else{
-        while (i >= 0 && llaves[i]->getLlave() > k->getLlave()){
+        while (i >= 0 && llaves[i]->getLlave() > key->getLlave()){
             i--;
         }
-        if (hijos[i+1]->cant_Key == 2*Orden-1){
-            split(i+1, hijos[i+1]);
-            if (llaves[i+1]->getLlave() < k->getLlave()){
+        if (2*Orden-1 == hijos[i+1]->cant_Key){
+            split(hijos[i+1],i+1);
+            if (llaves[i+1]->getLlave() < key->getLlave()){
                 i++;
             }
         }
-        hijos[i+1]->insertar(k);
+        hijos[i+1]->insertar(key);
     }
 }
-
-void Nodo::split(int i, Nodo *y){
-    Nodo *z = new Nodo(y->Orden, y->esHoja);
-    z->cant_Key = Orden - 1;
+void Nodo::split(Nodo* medio,int i){
+    Nodo* partido = new Nodo(medio->Orden, medio->esHoja);
+    partido->cant_Key = Orden - 1;
 
     for (int j = 0; j < Orden-1; j++){
-        z->llaves[j] = y->llaves[j+Orden];
+        partido->llaves[j] = medio->llaves[j+Orden];
     }
-    if (!y->esHoja){
+    if (!medio->esHoja){
         for (int j = 0; j < Orden; j++){
-            z->hijos[j] = y->hijos[j+Orden];
+            partido->hijos[j] = medio->hijos[j+Orden];
         }
     }
-    y->cant_Key = Orden - 1;
+    medio->cant_Key = Orden - 1;
     for (int j = cant_Key; j >= i+1; j--){
         hijos[j+1] = hijos[j];
     }
-    hijos[i+1] = z;
+    hijos[i+1] = partido;
     for (int j = cant_Key-1; j >= i; j--){
         llaves[j+1] = llaves[j];
     }
-    llaves[i] = y->llaves[Orden-1];
+    llaves[i] = medio->llaves[Orden-1];
     cant_Key = cant_Key + 1;
 }
-
-int Nodo::encontrarKey(Index* k){
-	int idx=0;
-	while (idx<cant_Key && llaves[idx]->getLlave() < k->getLlave()){
-		++idx;
-	}
-	return idx;
-}
-void Nodo::eliminar(Index* k){
-	int idx = encontrarKey(k);
-	if (idx < cant_Key && llaves[idx]->getLlave() == k->getLlave()){
+void Nodo::eliminar(Index* key){
+	int cont = encontrarKey(key);
+	if (cont < cant_Key && llaves[cont]->getLlave() == key->getLlave()){
 		if (esHoja){
-			removeFromLeaf(idx);
+			elimHoja(cont);
 		}else{
-			removeFromNonLeaf(idx);
+			elimHijo(cont);
 		}
 	}else{
 		if (esHoja){
-			cout << "La llave"<< k <<" no existe en el arbol\n";
+			cout << "Llave invalido"<<endl;
 			return;
 		}
-		bool flag = ( (idx==cant_Key)? true : false );
-		if (hijos[idx]->cant_Key < Orden){
-			fill(idx);
+		bool flag=false;
+		if (cont==cant_Key){
+			flag=true;
 		}
-		if (flag && idx > cant_Key){
-			hijos[idx-1]->eliminar(k);
+		if (hijos[cont]->cant_Key < Orden){
+			fill(cont);
+		}
+		if (flag && cont > cant_Key){
+			hijos[cont-1]->eliminar(key);
 		}else{
-			hijos[idx]->eliminar(k);
+			hijos[cont]->eliminar(key);
 		}
 	}
 	return;
 }
-void Nodo::removeFromLeaf (int idx){
-	for (int i=idx+1; i<cant_Key; ++i){
+int Nodo::encontrarKey(Index* key){
+	int cont=0;
+	while (cont<cant_Key && llaves[cont]->getLlave() < key->getLlave()){
+		cont++;
+	}
+	return cont;
+}
+void Nodo::merge(int cont){
+	Nodo *child = hijos[cont];
+	Nodo *sibling = hijos[cont+1];
+	child->llaves[Orden-1] = llaves[cont];
+	for (int i=0; i<sibling->cant_Key; ++i){
+		child->llaves[i+Orden] = sibling->llaves[i];
+	}
+	if (!child->esHoja){
+		for(int i=0; i<=sibling->cant_Key; ++i){
+			child->hijos[i+Orden] = sibling->hijos[i];
+		}
+	}
+	for (int i=cont+1; i<cant_Key; ++i){
+		llaves[i-1] = llaves[i];
+	}
+	for (int i=cont+2; i<=cant_Key; ++i){
+		hijos[i-1] = hijos[i];
+	}
+	child->cant_Key += sibling->cant_Key+1;
+	cant_Key--;
+	delete(sibling);
+	return;
+}
+void Nodo::elimHoja (int cont){
+	for (int i=cont+1; i<cant_Key; ++i){
 		llaves[i-1] = llaves[i];
 	}
 	cant_Key--;
 	return;
 }
-void Nodo::removeFromNonLeaf(int idx){
-	Index* k = llaves[idx];
-	if (hijos[idx]->cant_Key >= Orden){
-		Index*pred = getPred(idx);
-		llaves[idx] = pred;
-		hijos[idx]->eliminar(pred);
-	}else if(hijos[idx+1]->cant_Key >= Orden){
-		Index* succ = getSucc(idx);
-		llaves[idx] = succ;
-		hijos[idx+1]->eliminar(succ);
+void Nodo::elimHijo(int cont){
+	Index* key = llaves[cont];
+	if (hijos[cont]->cant_Key >= Orden){
+		Index*pred = getPred(cont);
+		llaves[cont] = pred;
+		hijos[cont]->eliminar(pred);
+	}else if(hijos[cont+1]->cant_Key >= Orden){
+		Index* succ = getSucc(cont);
+		llaves[cont] = succ;
+		hijos[cont+1]->eliminar(succ);
 	}
 	else{
-		merge(idx);
-		hijos[idx]->eliminar(k);
+		merge(cont);
+		hijos[cont]->eliminar(key);
 	}
 	return;
 }
-Index* Nodo::getPred(int idx){
-	Nodo *cur=hijos[idx];
-	while (!cur->esHoja){
-		cur = cur->hijos[cur->cant_Key];
+Index* Nodo::getPred(int cont){
+	Nodo *actual=hijos[cont];
+	while (!actual->esHoja){
+		actual = actual->hijos[actual->cant_Key];
 	}
-	return cur->llaves[cur->cant_Key-1];
+	return actual->llaves[actual->cant_Key-1];
 }
-Index* Nodo::getSucc(int idx){
-	Nodo *cur = hijos[idx+1];
-	while (!cur->esHoja){
-		cur = cur->hijos[0];
+Index* Nodo::getSucc(int cont){
+	Nodo *actual = hijos[cont+1];
+	while (!actual->esHoja){
+		actual = actual->hijos[0];
 	}
-	return cur->llaves[0];
+	return actual->llaves[0];
 }
-void Nodo::fill(int idx){
-	if (idx!=0 && hijos[idx-1]->cant_Key>=Orden){
-		borrowFromPrev(idx);
-	}else if (idx!=cant_Key && hijos[idx+1]->cant_Key>=Orden){
-		borrowFromNext(idx);
+void Nodo::fill(int cont){
+	if (cont!=0 && hijos[cont-1]->cant_Key>=Orden){
+		prestarIz(cont);
+	}else if (cont!=cant_Key && hijos[cont+1]->cant_Key>=Orden){
+		prestarDer(cont);
 	}
 	else{
-		if (idx != cant_Key){
-			merge(idx);
+		if (cont != cant_Key){
+			merge(cont);
 		}else{
-			merge(idx-1);
+			merge(cont-1);
 		}
 	}
 	return;
 }
-
-void Nodo::borrowFromPrev(int idx){
-	Nodo *child=hijos[idx];
-	Nodo *sibling=hijos[idx-1];
+void Nodo::prestarIz(int cont){
+	Nodo *child=hijos[cont];
+	Nodo *sibling=hijos[cont-1];
 	for (int i=child->cant_Key-1; i>=0; --i){
 		child->llaves[i+1] = child->llaves[i];
 	}
@@ -205,24 +208,23 @@ void Nodo::borrowFromPrev(int idx){
 			child->hijos[i+1] = child->hijos[i];
 		}
 	}
-	child->llaves[0] = llaves[idx-1];
+	child->llaves[0] = llaves[cont-1];
 	if (!esHoja){
 		child->hijos[0] = sibling->hijos[sibling->cant_Key];
 	}
-	llaves[idx-1] = sibling->llaves[sibling->cant_Key-1];
+	llaves[cont-1] = sibling->llaves[sibling->cant_Key-1];
 	child->cant_Key += 1;
 	sibling->cant_Key -= 1;
 	return;
 }
-
-void Nodo::borrowFromNext(int idx){
-	Nodo *child=hijos[idx];
-	Nodo *sibling=hijos[idx+1];
-	child->llaves[(child->cant_Key)] = llaves[idx];
+void Nodo::prestarDer(int cont){
+	Nodo *child=hijos[cont];
+	Nodo *sibling=hijos[cont+1];
+	child->llaves[(child->cant_Key)] = llaves[cont];
 	if (!(child->esHoja)){
 		child->hijos[(child->cant_Key)+1] = sibling->hijos[0];
 	}
-	llaves[idx] = sibling->llaves[0];
+	llaves[cont] = sibling->llaves[0];
 	for (int i=1; i<sibling->cant_Key; ++i){
 		sibling->llaves[i-1] = sibling->llaves[i];
 	}
@@ -233,28 +235,5 @@ void Nodo::borrowFromNext(int idx){
 	}
 	child->cant_Key += 1;
 	sibling->cant_Key -= 1;
-	return;
-}
-void Nodo::merge(int idx){
-	Nodo *child = hijos[idx];
-	Nodo *sibling = hijos[idx+1];
-	child->llaves[Orden-1] = llaves[idx];
-	for (int i=0; i<sibling->cant_Key; ++i){
-		child->llaves[i+Orden] = sibling->llaves[i];
-	}
-	if (!child->esHoja){
-		for(int i=0; i<=sibling->cant_Key; ++i){
-			child->hijos[i+Orden] = sibling->hijos[i];
-		}
-	}
-	for (int i=idx+1; i<cant_Key; ++i){
-		llaves[i-1] = llaves[i];
-	}
-	for (int i=idx+2; i<=cant_Key; ++i){
-		hijos[i-1] = hijos[i];
-	}
-	child->cant_Key += sibling->cant_Key+1;
-	cant_Key--;
-	delete(sibling);
 	return;
 }
