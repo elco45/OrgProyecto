@@ -12,6 +12,12 @@ Nodo::Nodo(int orden, bool eshoja){
 }
 
 Nodo::~Nodo(){
+	if (llaves){
+		delete llaves;
+	}
+	if (hijos){
+		delete hijos;
+	}
 }
 int Nodo::buscar(long key){
 	int i = 0;

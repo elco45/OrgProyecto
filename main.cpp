@@ -1280,7 +1280,7 @@ void M_Ciudad(){
 				}else{
 					l_indexCiudad.insert(l_indexCiudad.begin()+npos,ind);
 				}
-				RI_Ciudad();
+				//RI_Ciudad();
 			}else{
 				cout<<"ID invalido!"<<endl;
 			}
@@ -1343,7 +1343,7 @@ void M_Cliente(){
 				}else{
 					l_indexCliente.insert(l_indexCliente.begin()+npos,ind);
 				}
-				RI_Cliente();
+				//RI_Cliente();
 			}else{
 				cout<<"ID invalido!"<<endl;
 			}
@@ -1409,7 +1409,7 @@ void M_Linea(){
 				int rrn=l_indexLinea.at(pos)->getRrn();
 				outFile.seekp(tamHeader+ rrn*( sizeof(IdCliente)+ sizeof(Numero)));
 				outFile.write((char*)&IdCliente, sizeof(IdCliente));				
-				RI_Linea();
+				//RI_Linea();
 			}else{
 				cout<<"ID invalido!"<<endl;
 			}
@@ -1450,6 +1450,7 @@ void RI_Ciudad(){
 	if (!l_indexCiudad.empty()){
 		l_indexCiudad.clear();
 	}
+	BTree Btmp(10);
 	ifstream inFile("ciudad.bin",ios::binary);
 	inFile.seekg(0);
 	int avail;
@@ -1473,11 +1474,13 @@ void RI_Ciudad(){
 			}else{
 				l_indexCiudad.insert(l_indexCiudad.begin()+pos, ind);
 			}
-			btree_ciudad.insertar(ind2);
+			//btree_ciudad.insertar(ind2);
+			Btmp.insertar(ind2);
 		}
 		cont++;
 	}
 	inFile.close();
+	btree_ciudad=Btmp;
 	ofstream indexFile("I_ciudad.bin");
 	long key;
 	int rrn;
@@ -1498,6 +1501,7 @@ void RI_Cliente(){
 	if (!l_indexCliente.empty()){
 		l_indexCliente.clear();
 	}
+	BTree Btmp(50);
 	ifstream inFile("cliente.bin",ios::binary);
 	inFile.seekg(0);
 	int avail;
@@ -1525,11 +1529,13 @@ void RI_Cliente(){
 			}else{
 				l_indexCliente.insert(l_indexCliente.begin()+pos, ind);
 			}
-			btree_cliente.insertar(ind2);			
+			//btree_cliente.insertar(ind2);		
+			Btmp.insertar(ind2);	
 		}
 		cont++;
 	}
 	inFile.close();
+	btree_cliente=Btmp;
 	ofstream indexFile("I_cliente.bin");
 	long key;
 	int rrn;
@@ -1550,6 +1556,7 @@ void RI_Linea(){
 	if (!l_indexLinea.empty()){
 		l_indexLinea.clear();
 	}
+	BTree Btmp(75);
 	ifstream inFile("linea.bin",ios::binary);
 	inFile.seekg(0);
 	int avail;
@@ -1573,11 +1580,13 @@ void RI_Linea(){
 			}else{
 				l_indexLinea.insert(l_indexLinea.begin()+pos, ind);
 			}
-			btree_linea.insertar(ind2);
+			//btree_linea.insertar(ind2);
+			Btmp.insertar(ind2);
 		}
 		cont++;
 	}
 	inFile.close();
+	btree_linea=Btmp;
 	ofstream indexFile("I_Linea.bin");
 	long key;
 	int rrn;
