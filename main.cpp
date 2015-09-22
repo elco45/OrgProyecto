@@ -69,6 +69,7 @@ void Cp_Ciudad();
 void Cp_Cliente();
 void Cp_Linea();
 
+void tarifas();
 void imprimirIndice(vector<Index*>);
 
 //variables globales
@@ -267,7 +268,7 @@ int main(int argc, char const *argv[]){
 				cout<<"Valor invalido!"<<endl;
 			}
 		}else if(resp==8){//Tarifas
-
+			tarifas();
 		}else{
 			break;
 		}
@@ -1450,7 +1451,6 @@ void RI_Ciudad(){
 	if (!l_indexCiudad.empty()){
 		l_indexCiudad.clear();
 	}
-	BTree Btmp(10);
 	ifstream inFile("ciudad.bin",ios::binary);
 	inFile.seekg(0);
 	int avail;
@@ -1474,13 +1474,10 @@ void RI_Ciudad(){
 			}else{
 				l_indexCiudad.insert(l_indexCiudad.begin()+pos, ind);
 			}
-			//btree_ciudad.insertar(ind2);
-			Btmp.insertar(ind2);
 		}
 		cont++;
 	}
 	inFile.close();
-	btree_ciudad=Btmp;
 	ofstream indexFile("I_ciudad.bin");
 	long key;
 	int rrn;
@@ -1501,7 +1498,6 @@ void RI_Cliente(){
 	if (!l_indexCliente.empty()){
 		l_indexCliente.clear();
 	}
-	BTree Btmp(50);
 	ifstream inFile("cliente.bin",ios::binary);
 	inFile.seekg(0);
 	int avail;
@@ -1528,14 +1524,11 @@ void RI_Cliente(){
 				l_indexCliente.push_back(ind);
 			}else{
 				l_indexCliente.insert(l_indexCliente.begin()+pos, ind);
-			}
-			//btree_cliente.insertar(ind2);		
-			Btmp.insertar(ind2);	
+			}	
 		}
 		cont++;
 	}
 	inFile.close();
-	btree_cliente=Btmp;
 	ofstream indexFile("I_cliente.bin");
 	long key;
 	int rrn;
@@ -1556,7 +1549,6 @@ void RI_Linea(){
 	if (!l_indexLinea.empty()){
 		l_indexLinea.clear();
 	}
-	BTree Btmp(75);
 	ifstream inFile("linea.bin",ios::binary);
 	inFile.seekg(0);
 	int avail;
@@ -1580,13 +1572,10 @@ void RI_Linea(){
 			}else{
 				l_indexLinea.insert(l_indexLinea.begin()+pos, ind);
 			}
-			//btree_linea.insertar(ind2);
-			Btmp.insertar(ind2);
 		}
 		cont++;
 	}
 	inFile.close();
-	btree_linea=Btmp;
 	ofstream indexFile("I_Linea.bin");
 	long key;
 	int rrn;
@@ -1616,4 +1605,126 @@ void Cp_Ciudad(){
 	outFile.read((char*)&cantRegistros, sizeof(int));
 	outFile.read((char*)&flag, sizeof(bool));
 
+}
+
+
+void tarifas(){
+	long key;
+	cout<<"Ingrese ID Cliente:"<<endl;
+	cin>>key;
+	if (binarySearch(l_indexCliente,key,0,l_indexCliente.size()-1)){
+		//Buscando datos clieentes
+		ifstream inFile1("./cliente.bin",ios::binary);
+		inFile1.seekg(tamHeader);
+		bool encontrado1=false;
+		while(!inFile1.eof()){
+			char IdCliente[15];
+			char NombreCliente[40];
+			char Genero[2];
+			char IdCiudad[5];
+			inFile1.read((char*)&IdCliente, sizeof(IdCliente));
+			inFile1.read((char*)&NombreCliente, sizeof(NombreCliente));
+			inFile1.read((char*)&Genero, sizeof(Genero));
+			inFile1.read((char*)&IdCiudad, sizeof(IdCiudad));
+			if (atol(IdCliente)==key){
+				cout<<"Nombre: "<<NombreCliente<<endl;
+				cout<<"Genero: "<<Genero<<endl;
+				cout<<"ID ciudads: "<<IdCiudad<<endl;
+				encontrado1=true;
+			}
+		}
+		inFile1.close();
+		if (!encontrado1){
+			cout<<"LLave Invalida"<<endl;
+		}
+		vector<long> numero_de_ese_cliente;
+		//Buscando cliente
+		ifstream inFile("./linea.bin",ios::binary);
+		long ID ;
+		ID = key;
+		inFile.seekg(tamHeader);
+		bool encontrado=false;
+		while(!inFile.eof()){
+			char IdCliente[14];
+			char Numero[9];
+			inFile.read((char*)&IdCliente, sizeof(IdCliente));
+			inFile.read((char*)&Numero, sizeof(Numero));
+			if (atol(IdCliente)==ID){
+				numero_de_ese_cliente.push_back(atol(Numero));
+				encontrado=true;
+			}
+		}
+		inFile.close();
+		if (!encontrado){
+			cout<<"LLave Invalida"<<endl;
+		}
+		double T1=0;
+		double T2=0;
+		double T3=0;
+		if(encontrado){
+			cout<<"Cantidad de lineas: "<<numero_de_ese_cliente.size()<<endl;
+			for(int i=0;i<numero_de_ese_cliente.size();i++){
+				cout<<"###############################################################"<<endl;
+				cout<<"Telefono # "<<(i+1)<<" : "<<numero_de_ese_cliente.at(i)<<endl;
+				ifstream inFile("./llamada.bin",ios::binary);
+				inFile.seekg(0);
+				int avail;
+				int cantRegistros;
+				bool flag;
+				inFile.read((char*)&avail, sizeof(int));
+				inFile.read((char*)&cantRegistros, sizeof(int));
+				inFile.read((char*)&flag, sizeof(bool));
+				int cont=0;
+				while(cont<cantRegistros){
+					char Numero[9];
+					char inic[20];
+					char fin[20];
+					char Destino[9];
+					inFile.read((char*)&Numero, sizeof(Numero));
+					inFile.read((char*)&inic, sizeof(inic));
+					inFile.read((char*)&fin, sizeof(fin));
+					inFile.read((char*)&Destino, sizeof(Destino));
+					//hora de inicio de la llamad
+					stringstream nhora;
+					nhora <<inic[8]<<inic[9];
+					long hora = atol(nhora.str().c_str());
+					stringstream nminutos;
+					nminutos<< inic[10]<<inic[11];
+					long minuto = atol(nminutos.str().c_str());
+					stringstream nsegundos;
+					nsegundos <<inic[12]<<inic[13];
+					long segundos = atol(nsegundos.str().c_str());
+					//hora de final de llamada
+					stringstream nhora2 ;
+					nhora2 <<fin[8]<<fin[9];
+					long hora2 = atol(nhora2.str().c_str());
+					stringstream nminutos2;
+					nminutos2<< fin[10]<<fin[11];
+					long minuto2 = atol(nminutos2.str().c_str());
+					stringstream nsegundos2 ;
+					nsegundos2<< fin[12]<<fin[13];
+					long segundos2 = atol(nsegundos2.str().c_str());
+					if(numero_de_ese_cliente.at(i) == atol(Numero)){
+						if(((hora*3600)+(minuto*60)+segundos) > 28800 && ((hora*3600)+(minuto*60)+segundos) < 57599){
+							T1 += (double)(((double)(((hora2*3600)+(minuto2*60)+segundos2)-((hora*3600)+(minuto*60)+segundos))/(double)60)*(double)0.05);
+						}
+						if(((hora*3600)+(minuto*60)+segundos) > 57600 && ((hora*3600)+(minuto*60)+segundos) < 86399){
+							T2 += (double)(((double)(((hora2*3600)+(minuto2*60)+segundos2)-((hora*3600)+(minuto*60)+segundos))/(double)60)*(double)0.04);
+						}
+						if(((hora*3600)+(minuto*60)+segundos) > 0 && ((hora*3600)+(minuto*60)+segundos) < 28799){
+							T3 += (double)(((double)(((hora2*3600)+(minuto2*60)+segundos2)-((hora*3600)+(minuto*60)+segundos))/(double)60)*(double)0.01);
+						}
+						cout<<"          "<<nhora.str()<<" : "<<nminutos.str()<<" : "<<nsegundos.str()<<" Hora final "<<nhora2.str()<<" : "<<nminutos2.str()<<" : "<<nsegundos2.str()<<" Duracion en minuto: "<<((double)(((double)(hora2*3600)+(double)(minuto2*60)+(double)segundos2)-((double)(hora*3600)+(double)(minuto*60)+(double)segundos))/60)<<" Lp: "<<((double)((((double)(hora2*3600)+(double)(minuto2*60)+(double)segundos2)-((double)(hora*3600)+(double)(minuto*60)+(double)segundos))/60)*0.05)<<endl;
+					}
+					cont++;
+				}
+			}
+			cout<<"Total llamadas de (8:00:00-15:59:59): "<<T1<<endl;
+			cout<<"Total llamadas de (16:00:00-23:59:59): "<<T2<<endl;
+			cout<<"Total llamadas de (0:00:00-07:59:59): "<<T3<<endl;
+			inFile.close();
+		}
+		double suma = T1+T2+T3;
+		cout<<"Suma total "<<suma<<endl;
+	}
 }
