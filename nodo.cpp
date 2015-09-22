@@ -1,6 +1,6 @@
 #include "nodo.h"
 #include "index.h"
-int order;
+
 
 Nodo::Nodo(){
 }
@@ -34,16 +34,28 @@ int Nodo::buscar(long key){
 	}
 	return hijos[i]->buscar(key);
 }
-void Nodo::Inorder(){
+void Nodo::listar(){
 	int i;
     for (i=0; i<cant_Key; i++){
         if (!esHoja){
-            hijos[i]->Inorder();
+            hijos[i]->listar();
         }
         cout<<llaves[i]->getLlave()<<"-"<<llaves[i]->getRrn()<<endl;
     }
     if (!esHoja){
-        hijos[i]->Inorder();
+        hijos[i]->listar();
+    }
+}
+void Nodo::clear(){
+	int i;
+    for (i=0; i<cant_Key; i++){
+        if (!esHoja){
+            hijos[i]->listar();
+        }
+        llaves[i]=NULL;
+    }
+    if (!esHoja){
+        hijos[i]->listar();
     }
 }
 void Nodo::insertar(Index* key){
@@ -96,7 +108,7 @@ void Nodo::split(Nodo* medio,int i){
 }
 void Nodo::eliminar(Index* key){
 	int cont = encontrarKey(key);
-	if (cont < cant_Key && llaves[cont]->getLlave() == key->getLlave()){
+	if (llaves[cont]->getLlave() == key->getLlave() && cont < cant_Key){
 		if (esHoja){
 			elimHoja(cont);
 		}else{
@@ -112,7 +124,7 @@ void Nodo::eliminar(Index* key){
 			flag=true;
 		}
 		if (hijos[cont]->cant_Key < Orden){
-			fill(cont);
+			llenar(cont);
 		}
 		if (flag && cont > cant_Key){
 			hijos[cont-1]->eliminar(key);
@@ -190,7 +202,7 @@ Index* Nodo::getSucc(int cont){
 	}
 	return actual->llaves[0];
 }
-void Nodo::fill(int cont){
+void Nodo::llenar(int cont){
 	if (cont!=0 && hijos[cont-1]->cant_Key>=Orden){
 		prestarIz(cont);
 	}else if (cont!=cant_Key && hijos[cont+1]->cant_Key>=Orden){

@@ -17,9 +17,10 @@ public:
     Nodo();
 	Nodo(int, bool);
     int buscar(long);
-    void Inorder();
+    void listar();
     void insertar(Index*);
     void split(Nodo*, int);
+    void clear();
     ~Nodo();
     void eliminar(Index*);
     int encontrarKey(Index*);
@@ -28,7 +29,7 @@ public:
     void elimHijo(int);
     Index* getPred(int);
     Index* getSucc(int);
-    void fill(int);
+    void llenar(int);
     void prestarIz(int);
     void prestarDer(int);
 };
