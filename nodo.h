@@ -9,6 +9,7 @@ class Nodo{
 public:
     int Orden;
     bool esHoja;
+    int order;
     int cant_Key;
     Index** llaves;
     Nodo** hijos;

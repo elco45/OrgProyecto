@@ -7,11 +7,20 @@ Nodo::Nodo(int orden, bool eshoja){
 	Orden = orden;
 	esHoja = eshoja;
 	cant_Key = 0;
+	order= 2*orden;
 	llaves=new Index*[Orden-1];
     hijos = new Nodo*[Orden];
 }
 
 Nodo::~Nodo(){
+	if (llaves){
+		delete llaves;
+	}
+	if (hijos){
+		delete hijos;
+	}
+	
+	
 }
 int Nodo::buscar(long key){
 	int i = 0;
@@ -54,7 +63,7 @@ void Nodo::insertar(Index* key){
         while (i >= 0 && llaves[i]->getLlave() > key->getLlave()){
             i--;
         }
-        if (2*Orden-1 == hijos[i+1]->cant_Key){
+        if (order-1 == hijos[i+1]->cant_Key){
             split(hijos[i+1],i+1);
             if (llaves[i+1]->getLlave() < key->getLlave()){
                 i++;
