@@ -70,6 +70,7 @@ void Cp_Cliente();
 void Cp_Linea();
 
 void tarifas();
+
 void imprimirIndice(vector<Index*>);
 
 //variables globales
@@ -83,9 +84,9 @@ BTree btree_linea(75);
 
 int main(int argc, char const *argv[]){
 	int subresp;
-	RI_Ciudad();
+	/*RI_Ciudad();
 	RI_Cliente();
-	RI_Linea();
+	RI_Linea();*/
 	while(true){
 		int resp=menu();
 		if (resp==1){//Crear
@@ -268,6 +269,8 @@ int main(int argc, char const *argv[]){
 				cout<<"Valor invalido!"<<endl;
 			}
 		}else if(resp==8){//Tarifas
+			Cp_Ciudad();
+		}else if(resp==9){
 			tarifas();
 		}else{
 			break;
@@ -287,10 +290,11 @@ int menu(){
 		    <<"5. Buscar\n"
 		    <<"6. Modificar\n"
 		    <<"7. Reindexar\n"
-		    <<"8. Tarifas\n"
-		    <<"9. Salir"<<endl;
+		    <<"8. Compactar\n"
+		    <<"9. Tarifas\n"
+		    <<"10. Salir"<<endl;
 		cin>>resp;
-		if(resp>=1&&resp<=9){
+		if(resp>=1&&resp<=10){
 			return resp;
 		}else{
 			cout<<"Ingrese un valor valido!"<<endl;
@@ -915,7 +919,7 @@ void E_Ciudad(){
 		int pos=PosENuevoBinarySearch(l_indexCiudad, key);
 		int rrn=l_indexCiudad.at(pos)->getRrn();
 		Index* ind=new Index(key);
-		btree_ciudad.eliminar(ind);
+		//btree_ciudad.eliminar(ind);
 		char NombreCiudad[40];
 		char IdCiudad[5];
 		ofstream outFile("ciudad.bin",ios::out | ios::in);
@@ -1593,19 +1597,7 @@ void RI_Linea(){
 	outFile.close();
 }
 
-//Compactar
-void Cp_Ciudad(){
-	fstream outFile("ciudad.bin",ios::in|ios::out);
-	int cont=0;
-	int avail;
-	int cantRegistros;
-	bool flag;
-	outFile.seekp(0);
-	outFile.read((char*)(&avail), sizeof(int));
-	outFile.read((char*)&cantRegistros, sizeof(int));
-	outFile.read((char*)&flag, sizeof(bool));
 
-}
 
 
 void tarifas(){
