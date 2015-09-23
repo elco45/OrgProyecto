@@ -63,6 +63,7 @@ void M_Linea();
 void RI_Ciudad();
 void RI_Cliente();
 void RI_Linea();
+void RIL(vector<Index*>, BTree);
 
 //Compactar
 void Cp_Ciudad();
@@ -71,6 +72,7 @@ void Cp_Linea();
 
 void tarifas();
 bool verify();
+void xml();
 
 void imprimirIndice(vector<Index*>);
 
@@ -83,13 +85,14 @@ BTree btree_ciudad(20);
 BTree btree_cliente(60);
 BTree btree_linea(85);
 
+
 int main(int argc, char const *argv[]){
 	int subresp;
-	/*if (!verify()){
+	if (verify()){
 		RI_Ciudad();
 		RI_Cliente();
 		RI_Linea();
-	}*/
+	}
 	while(true){
 		int resp=menu();
 		if (resp==1){//Crear
@@ -271,10 +274,25 @@ int main(int argc, char const *argv[]){
 			}else{
 				cout<<"Valor invalido!"<<endl;
 			}
-		}else if(resp==8){//Tarifas
-			Cp_Ciudad();
-		}else if(resp==9){
+		}else if(resp==8){
+			cout<<"Compactar\n"
+				<<"1. Ciudades\n"
+				<<"2. Clientes\n"
+				<<"3. Lineas"<<endl;
+			cin>>subresp;
+			if (subresp==1){
+				Cp_Ciudad();
+			}else if(subresp==2){
+				Cp_Cliente();
+			}else if(subresp==3){
+				Cp_Linea();
+			}else{
+				cout<<"Valor invalido!"<<endl;
+			}
+		}else if(resp==9){//Tarifas
 			tarifas();
+		}else if(resp==10){
+			xml();
 		}else{
 			break;
 		}
@@ -296,7 +314,8 @@ int menu(){
 		    <<"7. Reindexar\n"
 		    <<"8. Compactar\n"
 		    <<"9. Tarifas\n"
-		    <<"10. Salir"<<endl;
+		    <<"10. XML\n"
+		    <<"11. Salir"<<endl;
 		cin>>resp;
 		if(resp>=1&&resp<=10){
 			return resp;
@@ -325,7 +344,7 @@ bool verify(){
 	if (flag1==true&&flag2==true&&flag3==true){
 		return true;
 	}else{
-		return false;
+		return true;
 	}
 }
 void imprimirIndice(vector<Index*> temp){
@@ -346,7 +365,6 @@ void WCiudadBin(){
 	int cantRegistros=30;
 	bool flag=0;
 	int rrn=0;
-
 	outFile.write((char*)&avail, sizeof(int));
 	outFile.write((char*)&cantRegistros, sizeof(int));
 	outFile.write((char*)&flag, sizeof(bool));
@@ -1469,7 +1487,6 @@ void RI_Ciudad(){
 		inFile.read((char*)NombreCiudad, sizeof(NombreCiudad));
 		if (IdCiudad[0]!='*'){
 			Index* ind=new Index(atol(IdCiudad), cont);
-			Index* ind2=new Index(atol(IdCiudad), cont);
 			int pos=PosBNuevoBinarySearch(l_indexCiudad,atol(IdCiudad));
 			if (pos==-1){
 				l_indexCiudad.push_back(ind);
@@ -1593,6 +1610,17 @@ void RI_Linea(){
 	outFile.seekp( sizeof(int)+ sizeof(int));
 	outFile.write((char*)&flag, sizeof(flag));
 	outFile.close();
+}
+
+//Actualizar indices en memoria
+void RIL(vector<Index*> v, BTree tree){
+	long key;
+	int rrn;
+	for (int i = 0; i < v.size(); i++){
+		key=v.at(i)->getLlave();
+		rrn=v.at(i)->getRrn();
+		tree.insertar(new Index(key,rrn));
+	}
 }
 
 //Compactar
@@ -1835,4 +1863,104 @@ void tarifas(){
 	}else{
 		cout<<"Valor invalido!"<<endl;
 	}
+}
+void xml(){
+	cout<<"?xml version=\""<<"1.0\""<<" encoding="<<"\"utf-8\"?>"<<endl;
+	cout<<"\t<Factura>"<<endl;
+	for (int i = 0; i < l_indexCliente.size(); i++){
+		ifstream inFile1("./cliente.bin");
+		inFile1.seekg(tamHeader);
+		long key=l_indexCliente.at(i)->getLlave();
+		char IdCliente[15];
+		char NombreCliente[40];
+		char Genero[2];
+		char IdCiudad[5];
+		while(!inFile1.eof()){
+			inFile1.read((char*)&IdCliente, sizeof(IdCliente));
+			inFile1.read((char*)&NombreCliente, sizeof(NombreCliente));
+			inFile1.read((char*)&Genero, sizeof(Genero));
+			inFile1.read((char*)&IdCiudad, sizeof(IdCiudad));
+			if (atol(IdCliente)==key){
+				break;
+			}
+		}
+		inFile1.close();
+		vector<long> numero_de_ese_cliente;
+		ifstream inFile("./linea.bin");
+		long ID ;
+		ID = key;
+		inFile.seekg(tamHeader);
+		while(!inFile.eof()){
+			char IdCliente[14];
+			char Numero[9];
+			inFile.read((char*)&IdCliente, sizeof(IdCliente));
+			inFile.read((char*)&Numero, sizeof(Numero));
+			if (atol(IdCliente)==ID){
+				numero_de_ese_cliente.push_back(atol(Numero));
+			}
+		}
+		inFile.close();
+		double T1=0,T2=0,T3=0;
+		cout<<"\t\t<Cliente> "<<NombreCliente<<endl;
+		for(int i=0;i<numero_de_ese_cliente.size();i++){
+			cout<<"\t\t\t<Numero> "<<numero_de_ese_cliente.at(i)<<" </Numero>"<<endl;
+			ifstream inFile("./llamada.bin");
+			inFile.seekg(0);
+			int avail;
+			int cantRegistros;
+			bool flag;
+			inFile.read((char*)&avail, sizeof(int));
+			inFile.read((char*)&cantRegistros, sizeof(int));
+			inFile.read((char*)&flag, sizeof(bool));
+			int cont=0;
+			while(cont<cantRegistros){
+				char Numero[9];
+				char inic[20];
+				char fin[20];
+				char Destino[9];
+				inFile.read((char*)&Numero, sizeof(Numero));
+				inFile.read((char*)&inic, sizeof(inic));
+				inFile.read((char*)&fin, sizeof(fin));
+				inFile.read((char*)&Destino, sizeof(Destino));
+				//hora de inicio de la llamad
+				stringstream nhora;
+				nhora <<inic[8]<<inic[9];
+				long hora = atol(nhora.str().c_str());
+				stringstream nminutos;
+				nminutos<< inic[10]<<inic[11];
+				long minuto = atol(nminutos.str().c_str());
+				stringstream nsegundos;
+				nsegundos <<inic[12]<<inic[13];
+				long segundos = atol(nsegundos.str().c_str());
+				//hora de final de llamada
+				stringstream nhora2 ;
+				nhora2 <<fin[8]<<fin[9];
+				long hora2 = atol(nhora2.str().c_str());
+				stringstream nminutos2;
+				nminutos2<< fin[10]<<fin[11];
+				long minuto2 = atol(nminutos2.str().c_str());
+				stringstream nsegundos2 ;
+				nsegundos2<< fin[12]<<fin[13];
+				long segundos2 = atol(nsegundos2.str().c_str());
+				if(numero_de_ese_cliente.at(i) == atol(Numero)){
+					if(((hora*3600)+(minuto*60)+segundos) > 28800 && ((hora*3600)+(minuto*60)+segundos) < 57599){
+						T1 += (double)(((double)(((hora2*3600)+(minuto2*60)+segundos2)-((hora*3600)+(minuto*60)+segundos))/(double)60)*(double)0.05);
+					}
+					if(((hora*3600)+(minuto*60)+segundos) > 57600 && ((hora*3600)+(minuto*60)+segundos) < 86399){
+						T2 += (double)(((double)(((hora2*3600)+(minuto2*60)+segundos2)-((hora*3600)+(minuto*60)+segundos))/(double)60)*(double)0.04);
+					}
+					if(((hora*3600)+(minuto*60)+segundos) > 0 && ((hora*3600)+(minuto*60)+segundos) < 28799){
+						T3 += (double)(((double)(((hora2*3600)+(minuto2*60)+segundos2)-((hora*3600)+(minuto*60)+segundos))/(double)60)*(double)0.01);
+					}
+				}
+				cont++;
+			}
+			double suma=T1+T2+T3;
+			cout<<"\t\t\t\t<Total> "<<suma<<" </Total"<<endl;
+		}
+		
+		cout<<"\t\t</Cliente>"<<endl;
+		inFile.close();
+	}
+	cout<<"\t</Factura>"<<endl;
 }

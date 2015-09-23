@@ -5,7 +5,7 @@
 #include "index.h"
 
 class BTree{
-    Nodo *raiz;
+    Nodo* raiz;
     int Orden;
     int order;
 public:

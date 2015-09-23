@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
 class Nodo{
 public:
     int Orden;
@@ -15,7 +14,7 @@ public:
     Nodo** hijos;
     //metodos
     Nodo();
-	Nodo(int, bool);
+    Nodo(int, bool);
     int buscar(long);
     void listar();
     void insertar(Index*);
@@ -28,10 +27,8 @@ public:
     void elimHijo(int);
     Index* getPred(int);
     Index* getSucc(int);
-    void fill(int);
+    void llenar(int);
     void prestarIz(int);
     void prestarDer(int);
 };
-
-
 #endif
