@@ -10,9 +10,10 @@ class BTree{
     int order;
 public:
     BTree(int);
+    BTree();
+    ~BTree();
     int buscar(long); 
     void listar();
-    void clear();
     void eliminar(Index*);
     void insertar(Index*);
 };

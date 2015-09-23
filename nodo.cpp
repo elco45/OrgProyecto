@@ -8,7 +8,7 @@ Nodo::Nodo(int orden, bool eshoja){
 	Orden = orden;
 	esHoja = eshoja;
 	cant_Key = 0;
-	order =2*orden;
+	order= 2*orden;
 	llaves=new Index*[Orden-1];
     hijos = new Nodo*[Orden];
 }
@@ -41,18 +41,6 @@ void Nodo::listar(){
             hijos[i]->listar();
         }
         cout<<llaves[i]->getLlave()<<"-"<<llaves[i]->getRrn()<<endl;
-    }
-    if (!esHoja){
-        hijos[i]->listar();
-    }
-}
-void Nodo::clear(){
-	int i;
-    for (i=0; i<cant_Key; i++){
-        if (!esHoja){
-            hijos[i]->listar();
-        }
-        llaves[i]=NULL;
     }
     if (!esHoja){
         hijos[i]->listar();

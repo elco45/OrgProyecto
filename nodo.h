@@ -9,8 +9,8 @@ class Nodo{
 public:
     int Orden;
     bool esHoja;
-    int cant_Key;
     int order;
+    int cant_Key;
     Index** llaves;
     Nodo** hijos;
     //metodos
@@ -20,7 +20,6 @@ public:
     void listar();
     void insertar(Index*);
     void split(Nodo*, int);
-    void clear();
     ~Nodo();
     void eliminar(Index*);
     int encontrarKey(Index*);

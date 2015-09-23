@@ -6,6 +6,12 @@ BTree::BTree(int d){
 	order=2*d;
 	Orden = d;
 }
+BTree::BTree(){
+
+}
+BTree::~BTree(){
+	delete raiz;
+}
 int BTree::buscar(long abuscar){
 	if(raiz != NULL){
 		return raiz->buscar(abuscar);
@@ -14,11 +20,6 @@ int BTree::buscar(long abuscar){
 void BTree::listar(){
 	if(raiz != NULL){
 		return raiz->listar();
-	}
-}
-void BTree::clear(){
-	if (raiz!=NULL){
-		return raiz->clear();
 	}
 }
 void BTree::insertar(Index* key){
