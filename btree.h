@@ -10,7 +10,7 @@ class BTree{
 public:
     BTree(int);
     int buscar(long); 
-    void Inorder();
+    void listar();
     void eliminar(Index*);
     void insertar(Index*);
 };

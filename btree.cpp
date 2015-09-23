@@ -9,9 +9,9 @@ int BTree::buscar(long abuscar){
 		return raiz->buscar(abuscar);
 	}
 }
-void BTree::Inorder(){
+void BTree::listar(){
 	if(raiz != NULL){
-		return raiz->Inorder();
+		return raiz->listar();
 	}
 }
 void BTree::insertar(Index* key){

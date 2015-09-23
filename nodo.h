@@ -16,7 +16,7 @@ public:
     Nodo();
 	Nodo(int, bool);
     int buscar(long);
-    void Inorder();
+    void listar();
     void insertar(Index*);
     void split(Nodo*, int);
     ~Nodo();

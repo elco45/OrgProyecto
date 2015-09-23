@@ -26,16 +26,16 @@ int Nodo::buscar(long key){
 	}
 	return hijos[i]->buscar(key);
 }
-void Nodo::Inorder(){
+void Nodo::listar(){
 	int i;
     for (i=0; i<cant_Key; i++){
         if (!esHoja){
-            hijos[i]->Inorder();
+            hijos[i]->listar();
         }
         cout<<llaves[i]->getLlave()<<"-"<<llaves[i]->getRrn()<<endl;
     }
     if (!esHoja){
-        hijos[i]->Inorder();
+        hijos[i]->listar();
     }
 }
 void Nodo::insertar(Index* key){
